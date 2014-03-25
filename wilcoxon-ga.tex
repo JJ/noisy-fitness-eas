@@ -27,17 +27,61 @@ Departamento de Lenguajes y Sistemas Informáticos\\
 
 \maketitle
 \begin{abstract}
+Noisy evaluation functions show up in may different optmization
+problems, from industrial optimization to strategy games. Dealing with
+them is not straightforward because of the inherent uncertainty in the
+true value of the fitness of an individual, if it actually
+exists. Several methods based on implicit or explicit average or
+changes in selection have been proposed in the past, but they involve
+a substantial redesign of the algorithm and the software used to solve
+the problem. In this paper we propose a new method based on using
+statistical tests to impose a partial order on the population; this
+partial order is used to assign a fitness value to every individual
+which can be used straitghforwarly in any selection function. 
+Tests over a combinatorial optimization problem show that, despite
+increasing computation time, the number of evaluations needed to reach
+a solution is much smaller than the one needed by other methods that
+use implicit or explicit averages for the fitness function. 
 \end{abstract}
 
 \section{Introduction}
 
+Noise in fitness has different origins. It can be inherent to the
+individual that is evaluated; for instance, in 
+\cite{DBLP:journals/jcst/MoraFGGF12} a game-playing bot that includes a
+set of application rates is optimized. This results in different
+actions in different runs, and obviously different success rates and
+then fitness. Even comparisons with other individuals can be affected:
+given exactly the same pair of individuals, the chance of one beating
+the other can vary in a wide range. In other cases like the one
+presented in the MADE environment, where whole worlds are evolved
+\cite{2014arXiv1403.3084G} the same kind of noisy environment will
+happen. 
+
+The examples mentioned above are actually one or the four categories
+where uncertainties in fitness are found. These four types include also,
+according to \cite{Jin2005303} approximated fitness functions
+(originated by, for instance, surrogate models); robust functions,
+where the main focus is in finding values with high tolerance to
+change in initial evaluation conditions, and finally dynamic fitness
+functions, where the {\em inherent} value of the function changes with
+time, Our main interest will be in the first type, since it is the one
+that we have actually met in the past and has led to the development
+of this paper. 
+
+At any rate, in this paper we will not be dealing with actual
+problems; we will try to simulate the effect of noise on combinatorial
+optimization functions using the same shape, and hopefully, amplitude,
+that we actually have found in problems so far. In fact, from the
+point of view of dealing with fitness, these are the main features of
+noise we will be interested in. Besides, we will deal mainly with
+additive noise with 0 mean and variance equal to 1.
 
 The rest of the paper is organized as follows: next we describe the
-state of the art in new and uncanny implementations of evolutionary algorithms and
-past implementations using different JS interpreters. The
-algorithm that has been adapted to JS is described next along with the
-experimental setup in Section \ref{sec:node}; finally results are
-presented in Section \ref{sec:dist} and its implications
+state of the art in the treatment of noise in fitness functions. The
+method we propose in this paper,  called Wilcoxon Tournament, will be
+shown in Section \ref{sec:node}; experiments are described and
+results shown in Section \ref{sec:dist} and its implications
 discussed in the last section of the paper. 
 
 \section{State of the art}
