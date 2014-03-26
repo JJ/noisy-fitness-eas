@@ -9,8 +9,8 @@
 \title{Taming noisy fitness using Wilcoxon statistical test}
 \subtitle{}
 
-\author{J.J. Merelo\inst{1}  \and Antonio
-  Mora\inst{1}  \and Anna I. Esparcia-Alcázar\inst{2} \and Víctor Rivas\inst{3}}
+\author{J.J. Merelo\inst{1} \and Pedro A. Castillo\inst{1} \and Antonio
+  Mora\inst{1}  \and Anna I. Esparcia-Alcázar\inst{2} \and Carlos  Cotta\inst{3}}
 
 \institute{University of Granada\\
        Department of Computer Architecture and Technology, ETSIIT\\
@@ -89,10 +89,77 @@ discussed in the last section of the paper.
 
 
 
-\section{Wilcoxon tournament}
+\section{Using a partial order based on Wilcoxon tests}
 \label{sec:wilcoxon}
 
+Our main objective in this work was to implement this type of
+selection by adding as little code as possible to the pre-existing
+evolutionary algorithm library {\tt Algorithm::Evolutionary}. We
+added two different features to this library
 
+\begin{itemize}
+\item A \emph{memory} that keeps every fitness value an individual has
+received. Fitness is then an array, and a new value is added at the
+beginning of each generation. This means that different individuals
+with have a different memory \emph{size}, as shown in 
+
+% will have to show something 
+
+that shows the evolution of the histogram of memory size with the
+number of generations in a typical run with 1024 individuals. Every
+individual is evaluated 6 times before the first generation,
+accounting for the big peak; these individuals are progressively
+eliminated as new ones enter the population; there is always a
+\emph{ridge} that indicates new individuals (memory size == 1 ). In the
+last generation there are individuals with many different memory
+sizes. 
+
+\begin{itemize}
+\item A way of incorporating the partial order into the population, with
+minimum disruption as indicated, which is done this way: every
+individual is compared a variable but fixed number of
+individuals. If their difference is statistically significant (\emph{p}
+value \textless{} 0.05), the
+winner receives 1 point and the loser -1. The initial fitness
+value is the number of comparisons, so that if an individual
+always wins it will have 2*comparisons as fitness, while the
+absolute loser will have 0. In
+% Figure something
+
+the distribution of fitness values along time is shown, with
+height representing the number of individuals with a particular fitness. The high
+{\em ridge} in its middle is the block of individuals with
+\emph{comparisons} fitness, that is, either not statistically different
+with the individuals it has been compared or better than as many
+individuals as it is worse. At any rate, there are a few
+individuals that have the maximum fitness and the situation is
+similar during all evolution, giving the evolutionary process
+enough fitness differences to proceed towards the individuals with
+a higher fitness.
+\end{itemize}
+\end{itemize}
+
+\section{Results}
+\label{sec:res}
+
+\begin{table}[!t]
+\centering
+\begin{tabular}{|l|r|r|}
+\hline 
+Method & Number of evaluations & Time\\
+\hline
+Baseline & 20752 $\pm$ 2528 & 1.2907 $\pm$ 0.16\\
+\hline
+0-Memory & 190855   $\pm$ 22370 & {\bf 2.64 $\pm$ 0.31}\\
+Memory + Avg & 276100 $\pm$  55088 & 22.88 $\pm$ 6.46\\
+WPO & {\bf 56081 $\pm$ 11525} & 82.19 $\pm$ 23.46\\
+\hline
+\end{tabular}
+\vspace{1em}
+\caption{Comparison between the baseline 4-Trap results and those
+  obtained by the rest of the methods; WPO or Wilcoxon-test based
+  partial ordering algorithm is the one introduced in this paper.\label{tab:res}}
+\end{table}
 
 \section{Conclusions}
 
@@ -112,7 +179,7 @@ researchers for their dedication and professionalism.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=6cm](logos_SIPESCA_2.jpg)
+\includegraphics[width=6cm]{logos_SIPESCA_2.jpg}
 \end{center}
 \end{figure}
 
