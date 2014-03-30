@@ -84,15 +84,17 @@ additive noise with 0 mean and variance equal to 1.
 The rest of the paper is organized as follows: next we describe the
 state of the art in the treatment of noise in fitness functions. The
 method we propose in this paper,  called Wilcoxon Tournament, will be
-shown in Section \ref{sec:node}; experiments are described and
-results shown in Section \ref{sec:dist} and its implications
+shown in Section \ref{sec:wilcoxon}; experiments are described and
+results shown in Section \ref{sec:res} and its implications
 discussed in the last section of the paper. 
 
 \section{State of the art}
 \label{sec:soa}
 
 The best review of the state of the art was done by Jin and Branke in
-2005 \cite{Jin2005303}. In this survey of evolutionary optimization in
+2005 \cite{Jin2005303}, although recent papers such as
+\cite{DBLP:journals/corr/QianYZ13} include a brief update of the state
+of the art. In this survey of evolutionary optimization in
 uncertain environments this uncertainty is categorized and then
 different options for dealing with it are proposed. In principle, the
 approach presented in this paper was designed to deal with the first kind of
@@ -108,7 +110,9 @@ the population is large enough, to an {\em implicit averaging} as
 mentioned in \cite{Jin2005303}. In fact, evolutionary algorithm
 selection is also stochastic and noise in fitness evaluation
 will have the same effect as noise in selection or a higher mutation
-rate; Miller and Goldberg proved that an infinite population would not
+rate and eventually make the evolution process easier and not harder
+in some particular cases
+\cite{DBLP:journals/corr/QianYZ13}. In fact, Miller and Goldberg proved that an infinite population would not
 be affedted by noise \cite{miller1996genetic} and Jun-Hua studied the
 effect of noise in convergence rates \cite{Junhua20136780} proving
 that an elitist GA finds at least one solution with a lowered
@@ -134,60 +138,38 @@ necessarily for other distributions. Jin and Branke do not mention
 (and we have not been able to find, although we are sure somebody must
 have tested it)
 other measures like the median which might be more adequate for
-certain noise models. 
+certain noise models. Besides, in many cases the number of evaluations is kept fixed
+and independent of its value, which might result in bad individuals
+being evaluated many times before being discarded; some authors have
+proposed {\em resampling}, that is, re-evaluate the number of
+individuals to increase the precision in fitness
+\cite{RadaVilela2014}, which will effectively increase the number of
+evaluations and thus slow down search. In any case, using average is
+also a small change to the overall algorithm framework, requiring only
+using as new fitness function the average of several evaluations.
+We will try to address this in the model presented in this paper.
+
+These two approaches that are focused on the evaluation process might
+be complemented with changes to the selection process. For instance,
+using a threshold \cite{Rudolph2001318} that is related to the noise characteristics to
+avoid making comparisons of individuals that might, in fact, be very
+similar or statistically the same; this is usually called {\em
+  threshold selection} and can be applied either to explicit or
+implicit averaging fitness functions. 
+
+All these approaches have a problem: average might not, in fact,
+exist, and even if it does, using averages to compare might not be
+statistically significant; if resampling is used to achieve
+statistical significance more evaluations than needed might have to be
+done. What we will do in this paper is to use resampling via an
+individual memory and use either explicit averaging or statistical
+comparisons. We will check in this paper what is the influence on
+search of these two strategies. 
 
 
-
-
-\section{Using a partial order based on Wilcoxon tests}
+\section{Fitness memory and statistical significant differences}
 \label{sec:wilcoxon}
 
-Our main objective in this work was to implement this type of
-selection by adding as little code as possible to the pre-existing
-evolutionary algorithm library {\tt Algorithm::Evolutionary}. We
-added two different features to this library
-
-\begin{itemize}
-\item A \emph{memory} that keeps every fitness value an individual has
-received. Fitness is then an array, and a new value is added at the
-beginning of each generation. This means that different individuals
-with have a different memory \emph{size}, as shown in 
-
-% will have to show something 
-
-that shows the evolution of the histogram of memory size with the
-number of generations in a typical run with 1024 individuals. Every
-individual is evaluated 6 times before the first generation,
-accounting for the big peak; these individuals are progressively
-eliminated as new ones enter the population; there is always a
-\emph{ridge} that indicates new individuals (memory size == 1 ). In the
-last generation there are individuals with many different memory
-sizes. 
-
-\begin{itemize}
-\item A way of incorporating the partial order into the population, with
-minimum disruption as indicated, which is done this way: every
-individual is compared a variable but fixed number of
-individuals. If their difference is statistically significant (\emph{p}
-value \textless{} 0.05), the
-winner receives 1 point and the loser -1. The initial fitness
-value is the number of comparisons, so that if an individual
-always wins it will have 2*comparisons as fitness, while the
-absolute loser will have 0. In
-% Figure something
-
-the distribution of fitness values along time is shown, with
-height representing the number of individuals with a particular fitness. The high
-{\em ridge} in its middle is the block of individuals with
-\emph{comparisons} fitness, that is, either not statistically different
-with the individuals it has been compared or better than as many
-individuals as it is worse. At any rate, there are a few
-individuals that have the maximum fitness and the situation is
-similar during all evolution, giving the evolutionary process
-enough fitness differences to proceed towards the individuals with
-a higher fitness.
-\end{itemize}
-\end{itemize}
 
 \section{Results}
 \label{sec:res}
