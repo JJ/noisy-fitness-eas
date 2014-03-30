@@ -262,23 +262,8 @@ next.
 
 \section{Results}
 \label{sec:res}
-
-ETA and WPO have been tested using two well-known benchmarks, the Trap
-function and the MMDP problem. Only these two functions were chosen
-because they have a different fitness landscape, are usually difficult
-for an evolutionary algorithm and have been extensively used for
-testing other kind of operators and algorithms. Besides, they are part
-of the {\tt Algorithm::Evolutionary} standard set of fitness
-functions. Several methods were tested: a baseline algorithm without
-noise, that gave us an idea on the time and number of evaluations
-needed to find the solution, a 0-memory (implicit average) method that
-uses noisy fitness without making any special arrangement, ETA and
-WPO. Evolutionary algorithm parameters (listed in Table \ref{fig:ga_params})  and code for all tests were the same (except in one
-particular case. We have also used an additive noise centered in one
-and different $\sigma$, which are independent of the fitness values
-range. 
-
-\begin{table}[htb]
+%
+\begin{table}[!h]
 \begin{center}
 \caption{Common evolutionary algorithm parameters}
 \label{fig:ga_params}
@@ -301,7 +286,22 @@ Stopping criterion & Non-noisy best found ot max evaluations reached \\
 \end{center}
 \end{table}
 %
-\begin{figure}
+ETA and WPO have been tested using two well-known benchmarks, the Trap
+function and the MMDP problem. Only these two functions were chosen
+because they have a different fitness landscape, are usually difficult
+for an evolutionary algorithm and have been extensively used for
+testing other kind of operators and algorithms. Besides, they are part
+of the {\tt Algorithm::Evolutionary} standard set of fitness
+functions. Several methods were tested: a baseline algorithm without
+noise, that gave us an idea on the time and number of evaluations
+needed to find the solution, a 0-memory (implicit average) method that
+uses noisy fitness without making any special arrangement, ETA and
+WPO. Evolutionary algorithm parameters (listed in Table \ref{fig:ga_params})  and code for all tests were the same (except in one
+particular case. We have also used an additive noise centered in one
+and different $\sigma$, which are independent of the fitness values
+range. 
+
+\begin{figure}[htb]
 \centering
 \subfloat[Memory size]{
 \includegraphics[width=0.5\textwidth]{trap-evals-all.png}
@@ -316,9 +316,7 @@ Stopping criterion & Non-noisy best found ot max evaluations reached \\
   different methods: 0 memory (black, solid), ETA (red, dashed), WPO
   (blue, dot-dashed). \label{fig:trap:evals}}
 \end{figure}
-
-
-
+%
 All tests use the {\tt Algorithm::Evolutionary} library and scripts
 are published, as above, in the GitHub repository, together with raw
 and processed results. The evolutionary algorithm code used in all
@@ -356,7 +354,22 @@ difficulty and the degree of noise, that is why we discarded the
 0-memory method due to its high degree of failure with noise = 10\%
 max fitness and evaluated ETA and WPO over another problem, MMDP with
 similar absolute $\sigma$, with the difference that, in this case,
-$\sigma=2$ would be 20\% of the max value. 
+$\sigma=2$ would be 20\% of the max value.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.7\textwidth]{evals-mmdp.png}
+\caption{Number of evaluations for successful runs ETA and WPO needed for solving the MMDP
+  problem with 6 blocks and different noise levels, $\sigma=1,2$. \label{fig:mmdp:evals}}
+\end{figure}
+%
+The evolutionary algorithm for MMDP used exactly the same parameters
+as for the Trap function above, except the max number of evaluations
+was boosted to one million. Initial tests with the 0-memory method
+yielded a very low degree of success, which left only the two methods
+analyzed in this paper. Success level was in all cases around 90\%,
+not different in any case, but the number of evaluations is shown in
+Figure \ref{fig:mmdp:evals}
 
 \section{Conclusions}
 
