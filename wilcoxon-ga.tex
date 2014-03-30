@@ -3,6 +3,7 @@
 \usepackage{graphicx}        % standard LaTeX graphics tool
 \usepackage{url}
 \usepackage{listings}
+\usepackage{subfig}
 
 \begin{document}
 
@@ -184,7 +185,8 @@ enough to participate in the pool, while  {\em older} ones use several
 measures to compute average fitness, which means that averages will be
 a more precise representative of actual value. As evolution proceeds,
 the best individuals will, effectively, have an underlying non-noisy
-best value. 
+best value. We will call this method {\em explicit temporal average}
+or ETA. 
 
 However, since average is a single value selection methods might, in
 fact, select as better individuals some that are not if the comparison
@@ -204,30 +206,157 @@ get a point less if it is the worse one. An individual that is better
 that all its couples will have a fitness of 20; one whose comparisons
 are never significant according to the Wilcoxon test will score
 exactly 10, the same as if it wins as many times as it loses, and the
-one that always loses will score 0. 
+one that always loses will score 0. We will call this method
+Wilcoxon-test based partial order, or WPO for short.
 
+\begin{figure}
+\centering
+\subfloat[Memory size]{
+\includegraphics[width=0.5\textwidth]{memory-size.png}
+}
+~
+\subfloat[Fitness distribution]{
+\includegraphics[width=0.5\textwidth]{fitness-distribution.png}
+}
+\caption{(Left) 3D plot of the distribution of memory sizes for a single
+  execution of the Wilcoxon-test based partial order. Initially, all
+  individuals (1024) started with 6 evaluations, which accounts for
+  the peak. (Right)
+  3d plot of the distribution of fitness values along time for the WPO
+  method on the Trap function. \label{fig:initial}}
+\end{figure}
+Initial tests were made with these two types of algorithms and the
+Trap function \cite{wilcoxon:ga}, showing good results for the second
+type of method and both of them being better, on that problem, that
+the implicit average method that uses a single noisy evaluation. The
+only aspect in which this method is better is in speed and memory
+footprint. Since it does not need to perform averages or make
+additional fitness measures every generation, it is twice as fast as
+the next method, the one that uses explicit average fitness. An
+exploration of memory sizes (shown in Figure \ref{fig:initial}, left; a rotating version of the graph is published in
+  \url{http://jj.github.io/Algorithm-Evolutionary/graphs/memory/}) for a
+typical run) showed that there is an uneven distribution of memory
+sizes and thus ages but, in general, there is no single memory size
+overcoming all the population. Besides, distribution of fitness, shown
+for a typical run in Figure \ref{fig:initial} (right, also published at
+  \url{http://jj.github.io/Algorithm-Evolutionary/graphs/fitness-histo/}) shows a
+distribution with most values concentrated along the middle (that is,
+fitness equal to 10 or individuals that cannot be compared with any
+other, together with a few with the highest fitness and many with the
+lowest fitness. Besides showing that using the partial order is a
+valid strategy, it also shows that a too greedy selection method would
+eliminate many individuals that might, in fact, have a high fitness if
+only given the chance to be evaluated for another generation. This
+will be taken into account when assigning parameter values to the
+evolutionary algorithm that will be presented next.
+
+All these initial tests have been programmed using {\tt
+  Algorithm::Evoluitionary} (in Perl) \cite{ae09} and code and data
+are available under an open source licence from the library
+repository at GitHub
+\url{https://github.com/JJ/Algorithm-Evolutionary/}. However, it was
+clear from these tests that the type of problems in which every method
+works the best needs to be characterized, so we will drill further
+into this with another set of experiments that will be presented
+next. 
 
 \section{Results}
 \label{sec:res}
 
-\begin{table}[!t]
-\centering
-\begin{tabular}{|l|r|r|}
-\hline 
-Method & Number of evaluations & Time\\
+ETA and WPO have been tested using two well-known benchmarks, the Trap
+function and the MMDP problem. Only these two functions were chosen
+because they have a different fitness landscape, are usually difficult
+for an evolutionary algorithm and have been extensively used for
+testing other kind of operators and algorithms. Besides, they are part
+of the {\tt Algorithm::Evolutionary} standard set of fitness
+functions. Several methods were tested: a baseline algorithm without
+noise, that gave us an idea on the time and number of evaluations
+needed to find the solution, a 0-memory (implicit average) method that
+uses noisy fitness without making any special arrangement, ETA and
+WPO. Evolutionary algorithm parameters (listed in Table \ref{fig:ga_params})  and code for all tests were the same (except in one
+particular case. We have also used an additive noise centered in one
+and different $\sigma$, which are independent of the fitness values
+range. 
+
+\begin{table}[htb]
+\begin{center}
+\caption{Common evolutionary algorithm parameters}
+\label{fig:ga_params}
+\begin{tabular}{lc}%{p{3cm}p{7cm}}
+\hline\noalign{\smallskip}
+\noalign{\smallskip}
+Parameter & Value \\
 \hline
-Baseline & 20752 $\pm$ 2528 & 1.2907 $\pm$ 0.16\\
-\hline
-0-Memory & 190855   $\pm$ 22370 & {\bf 2.64 $\pm$ 0.31}\\
-Memory + Avg & 276100 $\pm$  55088 & 22.88 $\pm$ 6.46\\
-WPO & {\bf 56081 $\pm$ 11525} & 82.19 $\pm$ 23.46\\
+\noalign{\smallskip}
+Chromosome length & 40 (Trap) 60 (MMDP)\\
+Population size & 1024.\\
+Selection & 2 tournament selection \\
+Replacement rate & 50\% \\
+Mutation rate & 20\% \\
+Crossover rate &  80\% \\
+Max evaluations & 200K (Trap) 1 Million(MMDP) \\
+Stopping criterion & Non-noisy best found ot max evaluations reached \\
 \hline
 \end{tabular}
-\vspace{1em}
-\caption{Comparison between the baseline 4-Trap results and those
-  obtained by the rest of the methods; WPO or Wilcoxon-test based
-  partial ordering algorithm is the one introduced in this paper.\label{tab:res}}
+\end{center}
 \end{table}
+%
+\begin{figure}
+\centering
+\subfloat[Memory size]{
+\includegraphics[width=0.5\textwidth]{trap-evals-all.png}
+}
+~
+\subfloat[Fitness distribution]{
+\includegraphics[width=0.5\textwidth]{trap-noisy-evals.png}
+}
+\caption{(Left) Comparison of number of evaluations for the 4-Trap x
+  10 function and the rest of the algorithms with a noise $\sigma$
+  equal to 1. (Right). Plot of average number of evaluations for
+  different methods: 0 memory (black, solid), ETA (red, dashed), WPO
+  (blue, dot-dashed). \label{fig:trap:evals}}
+\end{figure}
+
+
+
+All tests use the {\tt Algorithm::Evolutionary} library and scripts
+are published, as above, in the GitHub repository, together with raw
+and processed results. The evolutionary algorithm code used in all
+cases is exactly the same except for WPO, which, since it needs the
+whole population to evaluate fitness, needed a special reproduction
+and replacement library. This also means that the replacement method
+is not exactly the same: while WPO replaces every generation 50\% of
+the individuals, the rest evaluate new individuals before replacement
+and eliminate the worst 512 (50\% of the original
+population). Replacement is, thus, less greedy in the WPO case, but
+we do not think this will be a big influence on result (although it
+might account for the bigger number of evaluations obtained in some
+cases), besides, it just needed a small modification of code and was
+thus preferred for that reason. All values shown are the result of 30
+independent runs.
+
+The results for different noise levels are shown in Figure
+\ref{fig:trap:evals}. The boxplot on the left hand side compares the
+number of evaluations for the baseline method and the three methods
+with  $\sigma=1$. The implicit average method (labeled as 0-memory) is
+only slightly worse than the baseline value of around 12K evaluations,
+with the ETA and WPO method yielding very similar values which are
+actually worse than the 0-memory method. However, the scenario on the
+left, which shows how the number of evaluations scales with the noise
+level, is somewhat different. While the 0-memory method still has the
+least number of evaluations {\em for successful runs}, the success
+rate degrades very fast, with roughly the same and slightly less than
+100\% for $\sigma=2$ but falling down to 63\% for 0-memory and around
+80\% for ETA and WPO (86\% and 80\%). That is, best success rate is
+shown by the ETA method, but the best number of evaluatiosn for
+roughly the same method is achieved by WPO. 
+
+These results also show that performance degrades quickly with problem
+difficulty and the degree of noise, that is why we discarded the
+0-memory method due to its high degree of failure with noise = 10\%
+max fitness and evaluated ETA and WPO over another problem, MMDP with
+similar absolute $\sigma$, with the difference that, in this case,
+$\sigma=2$ would be 20\% of the max value. 
 
 \section{Conclusions}
 
@@ -235,7 +364,7 @@ WPO & {\bf 56081 $\pm$ 11525} & 82.19 $\pm$ 23.46\\
 
 \section{Acknowledgments}
 
-This work has been supported in part by project ANYSELF
+{\small This work has been supported in part by project ANYSELF
 (TIN2011-28627-C04-02 and -01).
 The authors would like to thank the FEDER of European Union for
 financial support via project "Sistema de Información y Predicción de
@@ -243,11 +372,11 @@ bajo coste y autónomo para conocer el Estado de las Carreteras en
 tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the
 "Programa Operativo FEDER de Andalucía 2007-2013". We also thank all
 Agency of Public Works of Andalusia Regional Government staff and
-researchers for their dedication and professionalism.
+researchers for their dedication and professionalism.}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=6cm]{logos_SIPESCA_2.jpg}
+\includegraphics[width=4cm]{logos_SIPESCA_2.jpg}
 \end{center}
 \end{figure}
 
