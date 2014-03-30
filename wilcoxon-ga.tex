@@ -170,6 +170,42 @@ search of these two strategies.
 \section{Fitness memory and statistical significant differences}
 \label{sec:wilcoxon}
 
+As indicated in the state of the art, most explicit averaging methods
+use several measures to compute fitness as an average, with
+resampling, that is, additional measures, in case comparisons are not
+statistically significant. In this paper we will introduce a fitness
+{\em memory}, which amounts to a resampling every generation an
+individual is able to survive. An individual is born with a fitness
+memory of a single value, with memory size increasing with {\em
+  survival} time. This is actually a combination of an implicit and
+explicit evaluation strategy: {\em younger} individuals are rejected
+outright if their fitness computed after a single evaluation is not
+enough to participate in the pool, while  {\em older} ones use several
+measures to compute average fitness, which means that averages will be
+a more precise representative of actual value. As evolution proceeds,
+the best individuals will, effectively, have an underlying non-noisy
+best value. 
+
+However, since average is a single value selection methods might, in
+fact, select as better individuals some that are not if the comparison
+is not statistically significant; this will happen mainly in the first
+and middle stages of search, which might effectively eliminate from
+the pool or not adequately represent individuals that constitute, in
+fact, good solutions. That is why we introduce an additional feature:
+using Wilcoxon comparison for comparing not the average, but all
+fitness values attached to an individual. This second method
+introduces a partial order in the population pool: two individuals
+might be different (one better than the other) or not. There are many
+possible ways of introducing this partial order in the evolutionary
+algorithm; however, what we have done is to pair individuals a certain
+number of times (10, by default) and have every individual score a
+point every time it is better than the other in the couple; it will
+get a point less if it is the worse one. An individual that is better
+that all its couples will have a fitness of 20; one whose comparisons
+are never significant according to the Wilcoxon test will score
+exactly 10, the same as if it wins as many times as it loses, and the
+one that always loses will score 0. 
+
 
 \section{Results}
 \label{sec:res}
