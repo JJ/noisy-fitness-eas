@@ -6,7 +6,7 @@
 
 \begin{document}
 
-\title{Taming noisy fitness using Wilcoxon statistical test}
+\title{Taming noisy fitness using memory and Wilcoxon statistical test}
 \subtitle{}
 
 \author{J.J. Merelo\inst{1} \and Pedro A. Castillo\inst{1} \and Antonio
@@ -56,7 +56,11 @@ given exactly the same pair of individuals, the chance of one beating
 the other can vary in a wide range. In other cases like the one
 presented in the MADE environment, where whole worlds are evolved
 \cite{2014arXiv1403.3084G} the same kind of noisy environment will
-happen. 
+happen;  when using evolutionary algorithms to optimize  stochastic
+methods such as neural networks \cite{castilloGECCO99}
+using evolutionary algorithms the measure that is usually taken as
+fitness, the success rate, will also be noisy since different training
+schedules will result in slightly different success rates. 
 
 The examples mentioned above are actually one or the four categories
 where uncertainties in fitness are found. These four types include also,
@@ -86,6 +90,52 @@ discussed in the last section of the paper.
 
 \section{State of the art}
 \label{sec:soa}
+
+The best review of the state of the art was done by Jin and Branke in
+2005 \cite{Jin2005303}. In this survey of evolutionary optimization in
+uncertain environments this uncertainty is categorized and then
+different options for dealing with it are proposed. In principle, the
+approach presented in this paper was designed to deal with the first kind of
+uncertainlty, noise in fitness evaluation, but it could be applied to
+other types of noise. In this situation, several solutions have been
+proposed and explicited in the survey.
+
+An usual approach is just disregarding the fact that the fitness is
+noisy and using whatever value is returned a single time or after
+re-evaluation each generation. This is the usual approach in our
+previous research \cite{castilloGECCO99,bots:evostar} and leads, if
+the population is large enough, to an {\em implicit averaging} as
+mentioned in \cite{Jin2005303}. In fact, evolutionary algorithm
+selection is also stochastic and noise in fitness evaluation
+will have the same effect as noise in selection or a higher mutation
+rate; Miller and Goldberg proved that an infinite population would not
+be affedted by noise \cite{miller1996genetic} and Jun-Hua studied the
+effect of noise in convergence rates \cite{Junhua20136780} proving
+that an elitist GA finds at least one solution with a lowered
+convergence rate. But finite populations
+are, so the usual approach is to increase population size to a value
+bigger than would be needed in a non-noisy environment. This has also
+the advantage that no special provision or change to the
+implementation has to be made; it is simply a matter of changing the
+value of a single parameter.
+
+Another more theoretically sound way is  using a statistical central tendency
+indicator, which is usually the {\em average}. This strategy is called
+{\em explicit averaging} by Jin and Branke
+\cite{Junhua20136780}. Averaging decreases the variance of fitness but
+the problem is that it is not clear in advance what would be the
+sample size used for averaging \cite{aizawa1994scheduling} but most
+authors use several measures of fitness for each new individual
+\cite{costa2013using}, although other averaging srategies have also
+been proposed, like averaging over the neighborhood of the
+individual. This assumes that there is, effectively, an average of the
+fitness values which is true for gaussian random noise but not
+necessarily for other distributions. Jin and Branke do not mention
+(and we have not been able to find, although we are sure somebody must
+have tested it)
+other measures like the median which might be more adequate for
+certain noise models. 
+
 
 
 
