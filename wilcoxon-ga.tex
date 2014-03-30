@@ -369,7 +369,22 @@ was boosted to one million. Initial tests with the 0-memory method
 yielded a very low degree of success, which left only the two methods
 analyzed in this paper. Success level was in all cases around 90\%,
 not different in any case, but the number of evaluations is shown in
-Figure \ref{fig:mmdp:evals}
+Figure \ref{fig:mmdp:evals}. In fact, WPO and ETA have a very similar
+number of evaluations. It is statistically indistinguishable for
+$\sigma=2$, and different only at the 10\% level (p-value = 0.09668)
+for $\sigma=1$, however, if we take time needed to reach solutions
+into account, ETA is much faster since it does not apply 10*1024
+statistical tests every generation. However, WPO is more robust, with
+a lower standard deviation, in general, at least for high noise
+levels. 
+
+At any rate, both methods obtain a good result with a much higher
+success rate than the implicit fitness method. Besides, it
+incorporates explicit fitness evaluation naturally into the population
+{\em resampling} only surviving individuals. This accounts for a
+predictable behavior of the algorithm, since the number of evaluations
+per generation is exactly the population size, which is important for
+optimization processes with a limited budget. 
 
 \section{Conclusions}
 
