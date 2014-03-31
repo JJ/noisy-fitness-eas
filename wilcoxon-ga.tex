@@ -176,15 +176,16 @@ necessarily for other distributions.
 %(and we have not been able to find, although we are sure somebody must
 %have tested it)
 % Antonio - Yo pondría esto así
-To our knowledge, there have not been tested
+% Ya decía yo que eso que estaba mal escrito no podía haberlo hecho yo... Reescrito - JJ 
+To the best of our knowledge, 
 other measures like the median which might be more adequate for
-certain noise models. Besides, in many cases the number of evaluations is kept fixed
+certain noise models have not been tested; the median always exists, while the average might not exist for non-centrally distributed variables. Besides, most models keep the number of evaluations is fixed
 and independent of its value, which might result in bad individuals
 being evaluated many times before being discarded; some authors have
-proposed {\em resampling}, that is, re-evaluate the number of
-individuals to increase the precision in fitness
+proposed {\em resampling}, that is, re-evaluate the individuals a number of times to increase the precision in fitness
 \cite{RadaVilela2014}, 
 % Antonio - reevaluar EL número de individuos??? o reevaluar UN número de individuos?
+% reevaluarlos un númereo de veces - corregido - JJ
 which will effectively increase the number of
 evaluations and thus slow down the search. In any case, using average is
 also a small change to the overall algorithm framework, requiring only
@@ -205,10 +206,10 @@ statistically significant; if resampling is used to achieve
 statistical significance more evaluations than needed might have to be
 done. What we will do in this paper is to use resampling via an
 individual memory and use either explicit averaging or statistical
-comparisons. 
+tests like the non-parametric Wilcoxon test. 
 % Antonio - decir qué método estadístico se usa (Wilcoxon)
-We will check in this paper what is the influence on
-search of these two strategies. 
+We will check in this paper what is the influence on the quality of
+search of these two strategies and which one, if any, is the best when working in noisy environments. 
 
 %--------------------------------------------------------------------------
 
@@ -250,7 +251,7 @@ is not statistically significant; this will happen mainly in the first
 and middle stages of search, which might effectively eliminate from
 the pool or not adequately represent individuals that constitute, in
 fact, good solutions. That is why we introduce an additional feature:
-using Wilcoxon comparison 
+using Wilcoxon test \cite{wilcoxon:1945}
 % Antonio - Wilcoxon test? Poner cita y/o breve explicación del test...
 for comparing not the average, but all
 fitness values attached to an individual. This second method
@@ -313,10 +314,12 @@ will be taken into account when assigning parameter values to the
 evolutionary algorithm that will be presented next.
 
 All these initial tests have been programmed using {\tt
-  Algorithm::Evoluitionary}
+  Algorithm::Evolutionary}
 % Antonio - Evolu-i-tionary? Supongo que no, pero por si le hicite algún cambio y lo renombraste. :D
+% corregido - JJ
  (in Perl) \cite{ae09} and code and data
 % Antonio - esa cita no está en el bib
+% Está en geneura.bib - JJ
 are available under an open source licence from the library
 repository at GitHub
 \url{https://github.com/JJ/Algorithm-Evolutionary/}. However, it was
@@ -354,26 +357,28 @@ Stopping criterion & Non-noisy best found or max evaluations reached \\
 \end{table}
 %
 ITA and WPO have been tested using two well-known benchmarks, the Trap
-function and the MMDP problem. 
+function and the MMDP problem \cite{goldberg92massive}. 
 % Antonio - Acabas de nombrar al MMDP por primera vez en el artículo. Parecía que sólo ibas a usar Trap. Además habría que medio explicarlo o poner una cita. ;)
-Only these two functions were chosen
-because they have a different fitness landscape, are usually difficult
+We chose to use just these two functions were chosen
+because they have different fitness landscapes, are usually difficult
 for an evolutionary algorithm and have been extensively used for
 testing other kind of operators and algorithms.
 % Antonio - Qué pasó con el fitness de Antares?
+% Me dio la forma de la función, que era aproximadamente gaussiana - JJ
  Besides, they are part
 of the {\tt Algorithm::Evolutionary} standard set of fitness
-functions. 
+functions \cite{ae:gh}. 
 
 Several methods were tested: a baseline algorithm without
 noise, that gave us an idea on the time and number of evaluations
 needed to find the solution, a 0-memory (implicit average) method that
 uses noisy fitness without making any special arrangement, ITA and
 WPO. Evolutionary algorithm parameters (listed in Table \ref{fig:ga_params})  and code for all tests were the same (except in one
-particular case. We have also used an additive noise centred in one
+particular case. We have also used an additive gaussian noise centered in zero
 and different $\sigma$, which is independent of the fitness values
-range. 
+range. By default, noise will follow a normal distribution with center in 0 and $\sigma=1$.
 % Antonio - explicar un poco esto del ruido centrado en sigma, que es la parte fundamental del trabajo (de los experimentos) y muchos lectores (como yo :D) no lo sabrán.
+% Es ruido gaussiano. Explicado. - JJ
 
 \begin{figure}[htb]
 \centering
