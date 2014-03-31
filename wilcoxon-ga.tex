@@ -9,9 +9,11 @@
 
 \title{Taming noisy fitness using memory and Wilcoxon statistical test}
 \subtitle{}
+% Antonio - lo de 'taming'...weno, pero se podría especificar meor lo del uso de 'memoria'
 
 \author{J.J. Merelo\inst{1} \and Pedro A. Castillo\inst{1} \and Antonio
   Mora\inst{1}  \and Anna I. Esparcia-Alcázar\inst{2} \and Carlos  Cotta\inst{3}}
+% Antonio - ¿No participaba Nuria también?
 
 \institute{University of Granada\\
        Department of Computer Architecture and Technology, ETSIIT\\
@@ -28,36 +30,45 @@ Departamento de Lenguajes y Sistemas Informáticos\\
 
 \maketitle
 \begin{abstract}
-Noisy evaluation functions show up in may different optmization
-problems, from industrial optimization to strategy games. Dealing with
-them is not straightforward because of the inherent uncertainty in the
-true value of the fitness of an individual, if it actually
-exists. Several methods based on implicit or explicit average or
-changes in selection have been proposed in the past, but they involve
-a substantial redesign of the algorithm and the software used to solve
-the problem. In this paper we propose a new method based on using
+Noisy evaluation functions 
+% Antonio - (in Evolutionary Algorithms)
+show up in may different optimization
+problems, from industrial optimization to strategy games. 
+% Antonio - industrial design to agent design in strategy games???
+% Antonio - yo explicaría en una línea lo qeu significa 'noisy'
+Dealing with them is not straightforward because of the inherent uncertainty in the true value of the fitness of an individual, if it actually
+% Antonio - true -> real
+exists. 
+% Antonio - yo creo que noisy no es saber el 'verdadero' valor del fitness de un individuo, eso se sabe por la función que se define. Otra cosa es que esa función no esté bien definida y no de un valor adecuado/fiable. Pero el ruido propiamente dicho consiste en que un mismo individuo puede tomar un valor muy bueno o muy malo en dos evaluaciones distintas...
+Several methods based on implicit or explicit average or
+changes in selection have been proposed in the past, 
+% Antonio - se da por sentado que todo el mundo sabe a lo que te refieres con 'selection'?
+but they involve a substantial redesign of the algorithm and the software used to solve the problem. In this paper we propose a new method based on using
 statistical tests to impose a partial order on the population; this
-partial order is used to assign a fitness value to every individual
-which can be used straitghforwarly in any selection function. 
-Tests over a combinatorial optimization problem show that, despite
+partial order is considered to assign a fitness value to every individual
+which can be used straightforwardly in any selection function. 
+Tests over a 
+% Antonio - noisy/hard? Darle un poco más de bombo a los experimentos que se han hecho. Decir que es un problema ampliamente conocido, que se han hecho la tira de experimentos, etc.
+combinatorial optimization problem show that, despite
 increasing computation time, the number of evaluations needed to reach
 a solution is much smaller than the one needed by other methods that
 use implicit or explicit averages for the fitness function. 
 \end{abstract}
 
+%--------------------------------------------------------------------------
+
 \section{Introduction}
 
 Noise in fitness has different origins. It can be inherent to the
 individual that is evaluated; for instance, in 
-\cite{DBLP:journals/jcst/MoraFGGF12} a game-playing bot that includes a
-set of application rates is optimized. This results in different
+\cite{DBLP:journals/jcst/MoraFGGF12} a game-playing bot (autonomous agent) that includes a set of application rates is optimized. This results in different
 actions in different runs, and obviously different success rates and
 then fitness. Even comparisons with other individuals can be affected:
 given exactly the same pair of individuals, the chance of one beating
 the other can vary in a wide range. In other cases like the one
 presented in the MADE environment, where whole worlds are evolved
 \cite{2014arXiv1403.3084G} the same kind of noisy environment will
-happen;  when using evolutionary algorithms to optimize  stochastic
+happen.  When using evolutionary algorithms to optimize stochastic
 methods such as neural networks \cite{castilloGECCO99}
 using evolutionary algorithms the measure that is usually taken as
 fitness, the success rate, will also be noisy since different training
@@ -65,14 +76,17 @@ schedules will result in slightly different success rates.
 
 The examples mentioned above are actually one or the four categories
 where uncertainties in fitness are found. These four types include also,
-according to \cite{Jin2005303} approximated fitness functions
+% Antonio - ¿cómo se llama la categoría que has contado arriba?
+according to \cite{Jin2005303}: approximated fitness functions
 (originated by, for instance, surrogate models); robust functions,
 where the main focus is in finding values with high tolerance to
 change in initial evaluation conditions, and finally dynamic fitness
 functions, where the {\em inherent} value of the function changes with
-time, Our main interest will be in the first type, since it is the one
-that we have actually met in the past and has led to the development
-of this paper. 
+time. 
+% Antonio - yo desarrollaría un poco más los diferentes tipos y en qué tipo de problemas se encuentran, por ejemplo, ya que la intro queda un poco escueta
+Our main interest will be in the first type, since it is the one
+that we have actually met in the past and which has led to the development
+of this work. 
 
 At any rate, in this paper we will not be dealing with actual
 problems; we will try to simulate the effect of noise on combinatorial
@@ -82,70 +96,81 @@ point of view of dealing with fitness, these are the main features of
 noise we will be interested in. Besides, we will deal mainly with
 additive noise with 0 mean and variance equal to 1.
 
+% Antonio - explicar qué se hará en el artículo para simular estos fitness, el Wilcoxon tournament, o al menos describir los experimentos
+
 The rest of the paper is organized as follows: next we describe the
 state of the art in the treatment of noise in fitness functions. The
-method we propose in this paper,  called Wilcoxon Tournament, will be
+method we propose in this paper, called Wilcoxon Tournament, will be
 shown in Section \ref{sec:wilcoxon}; experiments are described and
-results shown in Section \ref{sec:res} and its implications
-discussed in the last section of the paper. 
+results shown in Section \ref{sec:res}; finally its implications are discussed in the last section of the paper. 
+
+%--------------------------------------------------------------------------
 
 \section{State of the art}
 \label{sec:soa}
 
-The best review of the state of the art was done by Jin and Branke in
-2005 \cite{Jin2005303}, although recent papers such as
-\cite{DBLP:journals/corr/QianYZ13} include a brief update of the state
-of the art. In this survey of evolutionary optimization in
-uncertain environments this uncertainty is categorized and then
+The best review of the state of the art 
+% Antonio - in noisy fitness functions? noise evaluation? noise treatment?
+was done by Jin and Branke in 2005 \cite{Jin2005303}, although recent papers such as \cite{DBLP:journals/corr/QianYZ13} include a brief update of the state
+of the art. In this survey 
+% Antonio - el de 2005 o el reciente?
+of evolutionary optimization in
+uncertain environments this uncertainty is categorized, and then,
 different options for dealing with it are proposed. In principle, the
 approach presented in this paper was designed to deal with the first kind of
-uncertainlty, noise in fitness evaluation, but it could be applied to
+uncertainty, noise in fitness evaluation, but it could be applied to
 other types of noise. In this situation, several solutions have been
-proposed and explicited in the survey.
+proposed and explained in the survey.
+% Antonio - te refieres al primero o al reciente?
 
 An usual approach is just disregarding the fact that the fitness is
 noisy and using whatever value is returned a single time or after
-re-evaluation each generation. This is the usual approach in our
+re-evaluation each generation. 
+This is the usual approach in our
 previous research \cite{castilloGECCO99,bots:evostar} and leads, if
 the population is large enough, to an {\em implicit averaging} as
 mentioned in \cite{Jin2005303}. In fact, evolutionary algorithm
-selection is also stochastic and noise in fitness evaluation
+selection is also stochastic, so noise in fitness evaluation
 will have the same effect as noise in selection or a higher mutation
-rate and eventually make the evolution process easier and not harder
+rate, and eventually make the evolution process easier and not harder
 in some particular cases
-\cite{DBLP:journals/corr/QianYZ13}. In fact, Miller and Goldberg proved that an infinite population would not
-be affedted by noise \cite{miller1996genetic} and Jun-Hua studied the
-effect of noise in convergence rates \cite{Junhua20136780} proving
-that an elitist GA finds at least one solution with a lowered
-convergence rate. But finite populations
-are, so the usual approach is to increase population size to a value
-bigger than would be needed in a non-noisy environment. This has also
-the advantage that no special provision or change to the
-implementation has to be made; it is simply a matter of changing the
-value of a single parameter.
+\cite{DBLP:journals/corr/QianYZ13}. 
+% Antonio - esta frase no está muy bien escrita y es difícil de interpretar
+In fact, Miller and Goldberg proved that an infinite population would not
+be affected by noise \cite{miller1996genetic} and Jun-Hua and Ming studied the
+effect of noise in convergence rates \cite{Junhua20136780}, proving
+that an elitist genetic algorithm finds at least one solution with a lowered
+convergence rate. But populations are finite, so the usual approach is to increase the population size to a value bigger than would be needed in a non-noisy environment. 
+This has also the advantage that no special provision or change to the
+implementation has to be made; but a different value of a single parameter.
 
-Another more theoretically sound way is  using a statistical central tendency
+Another more theoretically sound way is using a statistical central tendency
 indicator, which is usually the {\em average}. This strategy is called
 {\em explicit averaging} by Jin and Branke
 \cite{Junhua20136780}. Averaging decreases the variance of fitness but
 the problem is that it is not clear in advance what would be the
-sample size used for averaging \cite{aizawa1994scheduling} but most
+sample size used for averaging \cite{aizawa1994scheduling}. Most
 authors use several measures of fitness for each new individual
-\cite{costa2013using}, although other averaging srategies have also
-been proposed, like averaging over the neighborhood of the
+\cite{costa2013using}, although other averaging strategies have also
+been proposed, like averaging over the neighbourhood of the
 individual. This assumes that there is, effectively, an average of the
-fitness values which is true for gaussian random noise but not
-necessarily for other distributions. Jin and Branke do not mention
-(and we have not been able to find, although we are sure somebody must
-have tested it)
+fitness values which is true for Gaussian random noise but not
+necessarily for other distributions. 
+%Jin and Branke do not mention
+%(and we have not been able to find, although we are sure somebody must
+%have tested it)
+% Antonio - Yo pondría esto así
+To our knowledge, there have not been tested
 other measures like the median which might be more adequate for
 certain noise models. Besides, in many cases the number of evaluations is kept fixed
 and independent of its value, which might result in bad individuals
 being evaluated many times before being discarded; some authors have
 proposed {\em resampling}, that is, re-evaluate the number of
 individuals to increase the precision in fitness
-\cite{RadaVilela2014}, which will effectively increase the number of
-evaluations and thus slow down search. In any case, using average is
+\cite{RadaVilela2014}, 
+% Antonio - reevaluar EL número de individuos??? o reevaluar UN número de individuos?
+which will effectively increase the number of
+evaluations and thus slow down the search. In any case, using average is
 also a small change to the overall algorithm framework, requiring only
 using as new fitness function the average of several evaluations.
 We will try to address this in the model presented in this paper.
@@ -164,37 +189,51 @@ statistically significant; if resampling is used to achieve
 statistical significance more evaluations than needed might have to be
 done. What we will do in this paper is to use resampling via an
 individual memory and use either explicit averaging or statistical
-comparisons. We will check in this paper what is the influence on
+comparisons. 
+% Antonio - decir qué método estadístico se usa (Wilcoxon)
+We will check in this paper what is the influence on
 search of these two strategies. 
 
+%--------------------------------------------------------------------------
 
 \section{Fitness memory and statistical significant differences}
 \label{sec:wilcoxon}
 
-As indicated in the state of the art, most explicit averaging methods
+As indicated in previous section, most explicit averaging methods
 use several measures to compute fitness as an average, with
-resampling, that is, additional measures, in case comparisons are not
+resampling, that is, additional measures, in case 
+% Antonio - that comparisons?
+comparisons are not
 statistically significant. In this paper we will introduce a fitness
-{\em memory}, which amounts to a resampling every generation an
-individual is able to survive. An individual is born with a fitness
+{\em memory}, which amounts 
+% Antonio - amounts -> aims?
+to a resampling every generation an
+individual survives. An individual is born with a fitness
 memory of a single value, with memory size increasing with {\em
-  survival} time. This is actually a combination of an implicit and
+  survival} time. This is actually a combination of an implicit and an 
 explicit evaluation strategy: {\em younger} individuals are rejected
 outright if their fitness computed after a single evaluation is not
 enough to participate in the pool, while  {\em older} ones use several
 measures to compute average fitness, which means that averages will be
-a more precise representative of actual value. As evolution proceeds,
+a more precise representation of actual value. 
+% Antonio - actual -> real/descriptive?
+As evolution proceeds,
 the best individuals will, effectively, have an underlying non-noisy
 best value. We will call this method {\em explicit temporal average}
 or ETA. 
+% Antonio - tampoco me mola lo de ETA, mejor 'incremental' o 'improving'
 
-However, since average is a single value selection methods might, in
-fact, select as better individuals some that are not if the comparison
+However, since average is a single value, selection methods might, in
+fact, select as better individuals 
+% Antonio - as best?
+some that are not if the comparison
 is not statistically significant; this will happen mainly in the first
 and middle stages of search, which might effectively eliminate from
 the pool or not adequately represent individuals that constitute, in
 fact, good solutions. That is why we introduce an additional feature:
-using Wilcoxon comparison for comparing not the average, but all
+using Wilcoxon comparison 
+% Antonio - Wilcoxon test? Poner cita y/o breve explicación del test...
+for comparing not the average, but all
 fitness values attached to an individual. This second method
 introduces a partial order in the population pool: two individuals
 might be different (one better than the other) or not. There are many
@@ -208,6 +247,7 @@ are never significant according to the Wilcoxon test will score
 exactly 10, the same as if it wins as many times as it loses, and the
 one that always loses will score 0. We will call this method
 Wilcoxon-test based partial order, or WPO for short.
+% Antonio - cursiva. ;)
 
 \begin{figure}
 \centering
@@ -225,11 +265,13 @@ Wilcoxon-test based partial order, or WPO for short.
   3d plot of the distribution of fitness values along time for the WPO
   method on the Trap function. \label{fig:initial}}
 \end{figure}
+% Antonio - por qué están las figuras 'torcidas'? La Z normalmente está vertical
 Initial tests were made with these two types of algorithms and the
 Trap function \cite{wilcoxon:ga}, showing good results for the second
 type of method and both of them being better, on that problem, that
-the implicit average method that uses a single noisy evaluation. The
-only aspect in which this method is better is in speed and memory
+the implicit average method that uses a single noisy evaluation. 
+% Antonio - la frase anterior no parece bien escrita
+The only aspect in which this method is better is in speed and memory
 footprint. Since it does not need to perform averages or make
 additional fitness measures every generation, it is twice as fast as
 the next method, the one that uses explicit average fitness. An
@@ -243,15 +285,19 @@ for a typical run in Figure \ref{fig:initial} (right, also published at
 distribution with most values concentrated along the middle (that is,
 fitness equal to 10 or individuals that cannot be compared with any
 other, together with a few with the highest fitness and many with the
-lowest fitness. Besides showing that using the partial order is a
-valid strategy, it also shows that a too greedy selection method would
+lowest fitness. Besides showing that using the partial order 
+% Antonio - partial order respecto a qué?
+is a valid strategy, it also shows that a too greedy selection method would
 eliminate many individuals that might, in fact, have a high fitness if
 only given the chance to be evaluated for another generation. This
 will be taken into account when assigning parameter values to the
 evolutionary algorithm that will be presented next.
 
 All these initial tests have been programmed using {\tt
-  Algorithm::Evoluitionary} (in Perl) \cite{ae09} and code and data
+  Algorithm::Evoluitionary}
+% Antonio - Evolu-i-tionary? Supongo que no, pero por si le hicite algún cambio y lo renombraste. :D
+ (in Perl) \cite{ae09} and code and data
+% Antonio - esa cita no está en el bib
 are available under an open source licence from the library
 repository at GitHub
 \url{https://github.com/JJ/Algorithm-Evolutionary/}. However, it was
@@ -259,6 +305,8 @@ clear from these tests that the type of problems in which every method
 works the best needs to be characterized, so we will drill further
 into this with another set of experiments that will be presented
 next. 
+
+%--------------------------------------------------------------------------
 
 \section{Results}
 \label{sec:res}
@@ -274,32 +322,39 @@ Parameter & Value \\
 \hline
 \noalign{\smallskip}
 Chromosome length & 40 (Trap) 60 (MMDP)\\
-Population size & 1024.\\
+Population size & 1024\\
 Selection & 2 tournament selection \\
 Replacement rate & 50\% \\
 Mutation rate & 20\% \\
 Crossover rate &  80\% \\
 Max evaluations & 200K (Trap) 1 Million(MMDP) \\
-Stopping criterion & Non-noisy best found ot max evaluations reached \\
+Stopping criterion & Non-noisy best found or max evaluations reached \\
 \hline
 \end{tabular}
 \end{center}
 \end{table}
 %
 ETA and WPO have been tested using two well-known benchmarks, the Trap
-function and the MMDP problem. Only these two functions were chosen
+function and the MMDP problem. 
+% Antonio - Acabas de nombrar al MMDP por primera vez en el artículo. Parecía que sólo ibas a usar Trap. Además habría que medio explicarlo o poner una cita. ;)
+Only these two functions were chosen
 because they have a different fitness landscape, are usually difficult
 for an evolutionary algorithm and have been extensively used for
-testing other kind of operators and algorithms. Besides, they are part
+testing other kind of operators and algorithms.
+% Antonio - Qué pasó con el fitness de Antares?
+ Besides, they are part
 of the {\tt Algorithm::Evolutionary} standard set of fitness
-functions. Several methods were tested: a baseline algorithm without
+functions. 
+
+Several methods were tested: a baseline algorithm without
 noise, that gave us an idea on the time and number of evaluations
 needed to find the solution, a 0-memory (implicit average) method that
 uses noisy fitness without making any special arrangement, ETA and
 WPO. Evolutionary algorithm parameters (listed in Table \ref{fig:ga_params})  and code for all tests were the same (except in one
-particular case. We have also used an additive noise centered in one
-and different $\sigma$, which are independent of the fitness values
+particular case. We have also used an additive noise centred in one
+and different $\sigma$, which is independent of the fitness values
 range. 
+% Antonio - explicar un poco esto del ruido centrado en sigma, que es la parte fundamental del trabajo (de los experimentos) y muchos lectores (como yo :D) no lo sabrán.
 
 \begin{figure}[htb]
 \centering
@@ -317,7 +372,7 @@ range.
   (blue, dot-dashed). \label{fig:trap:evals}}
 \end{figure}
 %
-All tests use the {\tt Algorithm::Evolutionary} library and scripts
+All tests use the {\tt Algorithm::Evolutionary} library, and the scripts
 are published, as above, in the GitHub repository, together with raw
 and processed results. The evolutionary algorithm code used in all
 cases is exactly the same except for WPO, which, since it needs the
@@ -336,22 +391,26 @@ independent runs.
 The results for different noise levels are shown in Figure
 \ref{fig:trap:evals}. The boxplot on the left hand side compares the
 number of evaluations for the baseline method and the three methods
-with  $\sigma=1$. The implicit average method (labeled as 0-memory) is
+with  $\sigma=1$. The implicit average method (labelled as 0-memory) is
 only slightly worse than the baseline value of around 12K evaluations,
-with the ETA and WPO method yielding very similar values which are
+with the ETA and WPO methods yielding very similar values which are
 actually worse than the 0-memory method. However, the scenario on the
-left, which shows how the number of evaluations scales with the noise
+left,
+% Antonio - right?
+ which shows how the number of evaluations scales with the noise
 level, is somewhat different. While the 0-memory method still has the
 least number of evaluations {\em for successful runs}, the success
 rate degrades very fast, with roughly the same and slightly less than
 100\% for $\sigma=2$ but falling down to 63\% for 0-memory and around
 80\% for ETA and WPO (86\% and 80\%). That is, best success rate is
-shown by the ETA method, but the best number of evaluatiosn for
+shown by the ETA method, but the best number of evaluations for
 roughly the same method is achieved by WPO. 
 
 These results also show that performance degrades quickly with problem
 difficulty and the degree of noise, that is why we discarded the
-0-memory method due to its high degree of failure with noise = 10\%
+0-memory method due to its high degree of failure 
+% Antonio - failure en qué sentido?
+with noise = 10\%
 max fitness and evaluated ETA and WPO over another problem, MMDP with
 similar absolute $\sigma$, with the difference that, in this case,
 $\sigma=2$ would be 20\% of the max value.
@@ -364,15 +423,21 @@ $\sigma=2$ would be 20\% of the max value.
 \end{figure}
 %
 The evolutionary algorithm for MMDP used exactly the same parameters
-as for the Trap function above, except the max number of evaluations
+as for the Trap function above, except 
+% Antonio - execpt for?
+the max number of evaluations
 was boosted to one million. Initial tests with the 0-memory method
 yielded a very low degree of success, which left only the two methods
-analyzed in this paper. Success level was in all cases around 90\%,
+analyzed in this paper. 
+% Antonio - esta frase (arriba) no la entiendo bien, parece incompleta...
+Success level was in all cases around 90\%,
 not different in any case, but the number of evaluations is shown in
-Figure \ref{fig:mmdp:evals}. In fact, WPO and ETA have a very similar
+Figure \ref{fig:mmdp:evals}. 
+% Antonio - ese 'but' no parece correcto aquí
+In fact, WPO and ETA have a very similar
 number of evaluations. It is statistically indistinguishable for
 $\sigma=2$, and different only at the 10\% level (p-value = 0.09668)
-for $\sigma=1$, however, if we take time needed to reach solutions
+for $\sigma=1$, however, if we take the time needed to reach solutions
 into account, ETA is much faster since it does not apply 10*1024
 statistical tests every generation. However, WPO is more robust, with
 a lower standard deviation, in general, at least for high noise
@@ -380,11 +445,14 @@ levels.
 
 At any rate, both methods obtain a good result with a much higher
 success rate than the implicit fitness method. Besides, it
+% Antonio - a qué se refiere el 'it'?
 incorporates explicit fitness evaluation naturally into the population
 {\em resampling} only surviving individuals. This accounts for a
-predictable behavior of the algorithm, since the number of evaluations
+predictable behaviour of the algorithm, since the number of evaluations
 per generation is exactly the population size, which is important for
 optimization processes with a limited budget. 
+
+%--------------------------------------------------------------------------
 
 \section{Conclusions}
 
