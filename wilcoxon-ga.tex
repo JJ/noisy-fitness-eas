@@ -64,7 +64,8 @@ partial order is considered to assign a fitness value to every individual
 which can be used straightforwardly in any selection function. 
 Tests over several
 % Antonio - noisy/hard? Darle un poco más de bombo a los experimentos que se han hecho. Decir que es un problema ampliamente conocido, que se han hecho la tira de experimentos, etc.
-combinatorial optimization problems show that, despite
+% hard - JJ
+hard combinatorial optimization problems show that, despite
 increasing computation time, both memory-based methods have a higher
 success rate than {\em implicit} averaging methods that do not use
 memory; however, there is not a clear advantage in success rate or
@@ -90,29 +91,30 @@ using evolutionary algorithms the measure that is usually taken as
 fitness, the success rate, will also be noisy since different training
 schedules will result in slightly different success rates. 
 
-The examples mentioned above are actually one or the four categories
-where uncertainties in fitness are found. These four types include also,
+The examples mentioned above are included actually in one or the four categories
+where uncertainties in fitness are found, fitness functions with intrinsic noise. These four types include also,
 % Antonio - ¿cómo se llama la categoría que has contado arriba?
-according to \cite{Jin2005303}: approximated fitness functions
+% olvidado y añadido - JJ 
+according to \cite{Jin2005303} approximated fitness functions
 (originated by, for instance, surrogate models); robust functions,
 where the main focus is in finding values with high tolerance to
 change in initial evaluation conditions, and finally dynamic fitness
 functions, where the {\em inherent} value of the function changes with
 time. 
 % Antonio - yo desarrollaría un poco más los diferentes tipos y en qué tipo de problemas se encuentran, por ejemplo, ya que la intro queda un poco escueta
+% Es que no cabe más. 
 Our main interest will be in the first type, since it is the one
 that we have actually met in the past and which has led to the development
 of this work. 
 
 At any rate, in this paper we will not be dealing with actual
-problems; we will try to simulate the effect of noise on combinatorial
-optimization functions using the same shape, and hopefully, amplitude,
+problems; we will try to simulate the effect of noise by adding to the fitness function gaussian noise centered in 0 and $\sigma=1,2,4$. We will deal mainly with combinatorial optimization functions with noise added having the same shape and amplitude,
 that we actually have found in problems so far. In fact, from the
 point of view of dealing with fitness, these are the main features of
-noise we will be interested in. Besides, we will deal mainly with
-additive noise with 0 mean and variance equal to 1.
+noise we will be interested in. 
 
 % Antonio - explicar qué se hará en el artículo para simular estos fitness, el Wilcoxon tournament, o al menos describir los experimentos
+% explicado algo - JJ
 
 The rest of the paper is organized as follows: next we describe the
 state of the art in the treatment of noise in fitness functions. The
@@ -125,19 +127,22 @@ results shown in Section \ref{sec:res}; finally its implications are discussed i
 \section{State of the art}
 \label{sec:soa}
 
-The best review of the state of the art 
+The best review of the state of the art in evolutionary algorithms in noisy environments
 % Antonio - in noisy fitness functions? noise evaluation? noise treatment?
+% corregido - JJ
 was done by Jin and Branke in 2005 \cite{Jin2005303}, although recent papers such as \cite{DBLP:journals/corr/QianYZ13} include a brief update of the state
-of the art. In this survey 
+of the art. In the first survey 
 % Antonio - el de 2005 o el reciente?
+% primero - JJ
 of evolutionary optimization in
 uncertain environments this uncertainty is categorized, and then,
 different options for dealing with it are proposed. In principle, the
 approach presented in this paper was designed to deal with the first kind of
 uncertainty, noise in fitness evaluation, but it could be applied to
-other types of noise. In this situation, several solutions have been
-proposed and explained in the survey.
+other types of noise. In this situation, several solutions were been
+proposed and explained in the survey \cite{Jin2005303}.
 % Antonio - te refieres al primero o al reciente?
+% primero - JJ
 
 An usual approach is just disregarding the fact that the fitness is
 noisy and using whatever value is returned a single time or after
@@ -147,11 +152,12 @@ previous research \cite{castilloGECCO99,bots:evostar} and leads, if
 the population is large enough, to an {\em implicit averaging} as
 mentioned in \cite{Jin2005303}. In fact, evolutionary algorithm
 selection is also stochastic, so noise in fitness evaluation
-will have the same effect as noise in selection or a higher mutation
-rate, and eventually make the evolution process easier and not harder
+will have the same effect as randomness in selection or a higher mutation
+rate, whch might make the evolution process easier and not harder
 in some particular cases
 \cite{DBLP:journals/corr/QianYZ13}. 
 % Antonio - esta frase no está muy bien escrita y es difícil de interpretar
+% corregida - JJ
 In fact, Miller and Goldberg proved that an infinite population would not
 be affected by noise \cite{miller1996genetic} and Jun-Hua and Ming studied the
 effect of noise in convergence rates \cite{Junhua20136780}, proving
@@ -208,6 +214,7 @@ done. What we will do in this paper is to use resampling via an
 individual memory and use either explicit averaging or statistical
 tests like the non-parametric Wilcoxon test. 
 % Antonio - decir qué método estadístico se usa (Wilcoxon)
+% DONE - Jj
 We will check in this paper what is the influence on the quality of
 search of these two strategies and which one, if any, is the best when working in noisy environments. 
 
@@ -224,6 +231,7 @@ comparisons are not
 statistically significant. In this paper we will introduce a fitness
 {\em memory}, which amounts 
 % Antonio - amounts -> aims?
+% no, equivale a - Jj 
 to a resampling every generation an
 individual survives. An individual is born with a fitness
 memory of a single value, with memory size increasing with {\em
@@ -238,7 +246,7 @@ a more precise representation of actual value.
 As evolution proceeds,
 the best individuals will, effectively, have an underlying non-noisy
 best value. We will call this method {\em incremental temporal average}
-or ITA. 
+or {\ sf ITA}. 
 % Antonio - tampoco me mola lo de ITA, mejor 'incremental' o
 % 'improving'
 % Cambiado - JJ
@@ -246,6 +254,7 @@ or ITA.
 However, since average is a single value, selection methods might, in
 fact, select as better individuals 
 % Antonio - as best?
+% better. comparando entre dos - JJ
 some that are not if the comparison
 is not statistically significant; this will happen mainly in the first
 and middle stages of search, which might effectively eliminate from
@@ -253,6 +262,7 @@ the pool or not adequately represent individuals that constitute, in
 fact, good solutions. That is why we introduce an additional feature:
 using Wilcoxon test \cite{wilcoxon:1945}
 % Antonio - Wilcoxon test? Poner cita y/o breve explicación del test...
+% añadida. - JJ
 for comparing not the average, but all
 fitness values attached to an individual. This second method
 introduces a partial order in the population pool: two individuals
@@ -266,8 +276,9 @@ that all its couples will have a fitness of 20; one whose comparisons
 are never significant according to the Wilcoxon test will score
 exactly 10, the same as if it wins as many times as it loses, and the
 one that always loses will score 0. We will call this method
-Wilcoxon-test based partial order, or WPO for short.
+Wilcoxon-test based partial order, or {\sf WPO} for short.
 % Antonio - cursiva. ;)
+% san serif - JJ
 
 \begin{figure}
 \centering
@@ -286,11 +297,12 @@ Wilcoxon-test based partial order, or WPO for short.
   method on the Trap function. \label{fig:initial}}
 \end{figure}
 % Antonio - por qué están las figuras 'torcidas'? La Z normalmente está vertical
+% No he visto mejor forma de sacarlas - JJ
 Initial tests were made with these two types of algorithms and the
-Trap function \cite{wilcoxon:ga}, showing good results for the second
-type of method and both of them being better, on that problem, that
-the implicit average method that uses a single noisy evaluation. 
+Trap function \cite{wilcoxon:ga}, showing the best results for the WPO method  and both of them being better, on that problem, that
+the implicit average method that uses a single noisy evaluation per individual. 
 % Antonio - la frase anterior no parece bien escrita
+% sí lo está, pero he aclarado algo por si acaso  JJ 
 The only aspect in which this method is better is in speed and memory
 footprint. Since it does not need to perform averages or make
 additional fitness measures every generation, it is twice as fast as
@@ -305,8 +317,9 @@ for a typical run in Figure \ref{fig:initial} (right, also published at
 distribution with most values concentrated along the middle (that is,
 fitness equal to 10 or individuals that cannot be compared with any
 other, together with a few with the highest fitness and many with the
-lowest fitness. Besides showing that using the partial order 
+lowest fitness. Besides showing that using the partial order for individual selection 
 % Antonio - partial order respecto a qué?
+% respecto a nada. Es una relación entre individuos Aclarado - JJ
 is a valid strategy, it also shows that a too greedy selection method would
 eliminate many individuals that might, in fact, have a high fitness if
 only given the chance to be evaluated for another generation. This
@@ -356,9 +369,10 @@ Stopping criterion & Non-noisy best found or max evaluations reached \\
 \end{center}
 \end{table}
 %
-ITA and WPO have been tested using two well-known benchmarks, the Trap
-function and the MMDP problem \cite{goldberg92massive}. 
+ITA and WPO have been tested using two well-known benchmarks, the deceptive bimodal Trap \cite{deb1992analyzing}
+function and the Massively Multimodal Deceptive Problem \cite{goldberg92massive} (MMDP). 
 % Antonio - Acabas de nombrar al MMDP por primera vez en el artículo. Parecía que sólo ibas a usar Trap. Además habría que medio explicarlo o poner una cita. ;)
+% puestas dos - JJ
 We chose to use just these two functions were chosen
 because they have different fitness landscapes, are usually difficult
 for an evolutionary algorithm and have been extensively used for
@@ -419,8 +433,9 @@ with  $\sigma=1$. The implicit average method (labelled as 0-memory) is
 only slightly worse than the baseline value of around 12K evaluations,
 with the ITA and WPO methods yielding very similar values which are
 actually worse than the 0-memory method. However, the scenario on the
-left,
+right,
 % Antonio - right?
+% right - JJ
  which shows how the number of evaluations scales with the noise
 level, is somewhat different. While the 0-memory method still has the
 least number of evaluations {\em for successful runs}, the success
@@ -432,8 +447,9 @@ roughly the same method is achieved by WPO.
 
 These results also show that performance degrades quickly with problem
 difficulty and the degree of noise, that is why we discarded the
-0-memory method due to its high degree of failure 
+0-memory method due to its high degree of failure (a high percentage of the runs did not find the solution) 
 % Antonio - failure en qué sentido?
+% pues que no encuentran la solución - JJ 
 with noise = 10\%
 max fitness and evaluated ITA and WPO over another problem, MMDP with
 similar absolute $\sigma$, with the difference that, in this case,
@@ -449,15 +465,17 @@ $\sigma=2$ would be 20\% of the max value.
 The evolutionary algorithm for MMDP used exactly the same parameters
 as for the Trap function above, except 
 % Antonio - execpt for?
+% no - JJ
 the max number of evaluations
 was boosted to one million. Initial tests with the 0-memory method
 yielded a very low degree of success, which left only the two methods
-analyzed in this paper. 
+analyzed in this paper for testing with MMDP. 
 % Antonio - esta frase (arriba) no la entiendo bien, parece incompleta...
-Success level was in all cases around 90\%,
-not different in any case, but the number of evaluations is shown in
+% terminada - JJ
+Success level was in all cases around 90\% and very similar in all experiments; the number of evaluations is more affected by noise and shown in
 Figure \ref{fig:mmdp:evals}. 
 % Antonio - ese 'but' no parece correcto aquí
+% correcto - JJ
 In fact, WPO and ITA have a very similar
 number of evaluations. It is statistically indistinguishable for
 $\sigma=2$, and different only at the 10\% level (p-value = 0.09668)
@@ -468,9 +486,10 @@ a lower standard deviation, in general, at least for high noise
 levels. 
 
 At any rate, both methods obtain a good result with a much higher
-success rate than the implicit fitness method. Besides, it
+success rate than the implicit fitness (0-memory) method. Besides, ITA and APO 
 % Antonio - a qué se refiere el 'it'?
-incorporates explicit fitness evaluation naturally into the population
+% a los dos métodos, corregido - JJ
+incorporate explicit fitness evaluation naturally into the population
 {\em resampling} only surviving individuals. This accounts for a
 predictable behaviour of the algorithm, since the number of evaluations
 per generation is exactly the population size, which is important for
