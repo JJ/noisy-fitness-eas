@@ -1,4 +1,6 @@
 wilcoxon-ga-ecta
 ================
 
-Version of the file for the ECTA-IJCCI conference
+Using Wilcoxon comparisons to find the best in noisy function
+environments, paper for PPSN and further. Version of the file for the ECTA-IJCCI conference
+
