@@ -41,15 +41,15 @@
 \keywords{Evolutionary algorithms, noisy optimization problems, games,
   strategy games}
 
-\abstract{In games as in life, the outcome of a match is uncertain due
-  to several reasons: the characters appear in different initial
-  conditions or the response of the player, even if programmed, is not
-  deterministic; different matches will get different score. That is a
-  problem when optimizing a game-playing engine: fitness will be
+\abstract{In most computer games as in life, the outcome of a match is uncertain due
+  to several reasons: the characters or assets appear in different initial
+  positions or the response of the player, even if programmed, is not
+  deterministic; different matches will yield different scores. That is a
+  problem when optimizing a game-playing engine: its fitness will be
   noisy, and if we use an evolutionary algorithm it will have to deal
   with it. This is not straightforward since there is  an inherent
 uncertainty in the true value of the fitness of an individual, or
-rather whether one chromosome is better than another.
+rather whether one chromosome is better than another, thus making it preferable for selection.
 % Antonio - true -> real
 % No, true o en todo caso actual - JJ
 % Antonio - yo creo que noisy no es saber el 'verdadero' valor del
@@ -60,21 +60,21 @@ rather whether one chromosome is better than another.
 % en dos evaluaciones distintas...
 % Cambiado para hablar de comparación de valores - JJ
 Several methods based on implicit or explicit average or
-changes in selection have been proposed in the past, 
+changes in the selection of individuals for the next generation have been proposed in the past, 
 % Antonio - se da por sentado que todo el mundo sabe a lo que te
 % refieres con 'selection'?
 % Es un congreso de GAS - jj
 but they involve a substantial redesign of the algorithm and the
 software used to solve the problem. In this paper we propose  new
-methods based on incremental computation or fitness average or, additionally, using
+methods based on incremental computation (memory-based) or fitness average or, additionally, using
 statistical tests to impose a partial order on the population; this
 partial order is considered to assign a fitness value to every individual
 which can be used straightforwardly in any selection function. 
-Tests over several
+Tests using several
 % Antonio - noisy/hard? Darle un poco más de bombo a los experimentos que se han hecho. Decir que es un problema ampliamente conocido, que se han hecho la tira de experimentos, etc.
 % hard - JJ
 hard combinatorial optimization problems show that, despite
-increasing computation time, both memory-based methods have a higher
+an increased computation time with respect to the other methods, both memory-based methods have a higher
 success rate than {\em implicit} averaging methods that do not use
 memory; however, there is not a clear advantage in success rate or
 algorithmic terms of one method over the other. 
