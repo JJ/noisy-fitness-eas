@@ -18,7 +18,7 @@
   I. Esparcia-Alcázar\sup{2}, Carlos  Cotta\sup{3}, Nuria
   Rico \sup{4}}
 \affiliation{\sup{1}University of Granada, 
-       Department of Computer Architecture and Technology, ETSIIT,
+       Department of Computer Architecture and Technology, ETSIIT, and CITIC \url{http://citic.ugr.es}
        18071 - Granada}
 \affiliation{\sup{2}S2Grupo}
 \affiliation{\sup{3}Universidad de Málaga,
@@ -109,7 +109,7 @@ that we have actually met in the past and which has led to the development
 of this work. 
 
 At any rate, in this paper we will not be dealing with actual
-problems; we will try to simulate the effect of noise by adding to the fitness function gaussian noise centered in 0 and $\sigma=1,2,4$. We will deal mainly with combinatorial optimization functions with noise added having the same shape and amplitude,
+problems; we will try to simulate the effect of noise by adding to the fitness function Gaussian noise centered in 0 and $\sigma=1,2,4$. We will deal mainly with combinatorial optimization functions with noise added having the same shape and amplitude,
 that we actually have found in problems so far. In fact, from the
 point of view of dealing with fitness, these are the main features of
 noise we will be interested in. 
@@ -242,13 +242,13 @@ which shows a plot of the standard deviation in both generations and
 illustrates the fact that the spread of fitness values is {\em bigger}
 as the evolution proceeds, going from around 0.15 to around 0.20. 
 %
-\begin{figure}
+\begin{figure*}[t!b]
 \centering
-\includegraphics[width=0.4\textwidth]{../images/sd.png}
+\includegraphics[width=0.8\textwidth]{../images/sd.png}
 \caption{Boxplot of standard deviation of noise fitted to a normal
   distribution, left for the first generation and right for the
   50th. Fitness averages around 1. \label{fig:sd}}
-\end{figure}
+\end{figure*}
 %
 which might be a bit misleading since the average values of
 the fitness increase at the same time, but it implies that the noise
@@ -276,7 +276,7 @@ does follow that distribution (individual 8) is shown in figure
 %
 \begin{figure*}[!t]
 \centering
-\includegraphics[scale=0.8]{../images/indi8.png}
+\includegraphics{../images/indi8.png}
 \caption{Fit of the fitness value of an individual in the first
   generation of the evolutionary algorithm to a gamma distribution,
   showing an histogram in the top left corner, CDFs in the bottom left
@@ -294,7 +294,7 @@ in general, fitness is skewed and has a high value. Besides, it
 follows a gamma distribution, which, if we wan to model noise
 accurately, should be the one used. However, we are rather interested
 in the overall shape of noise so since the skewness value of the gamma
-distribution is rather high we will use, in this paper, a gaussian
+distribution is rather high we will use, in this paper, a Gaussian
 noise to simulate it. This will be used in the experiments shown
 below. 
 
@@ -323,10 +323,7 @@ a more precise representation of actual value.
 As evolution proceeds,
 the best individuals will, effectively, have an underlying non-noisy
 best value. We will call this method {\em incremental temporal average}
-or {\ sf ITA}. 
-% Antonio - tampoco me mola lo de ITA, mejor 'incremental' o
-% 'improving'
-% Cambiado - JJ
+or {\sf ITA}. 
 
 However, since average is a single value, selection methods might, in
 fact, select as better individuals 
@@ -354,8 +351,6 @@ are never significant according to the Wilcoxon test will score
 exactly 10, the same as if it wins as many times as it loses, and the
 one that always loses will score 0. We will call this method
 Wilcoxon-test based partial order, or {\sf WPO} for short.
-% Antonio - cursiva. ;)
-% san serif - JJ
 
 Initial tests, programmed in Perl using {\tt
   Algorithm::Evolutionary}~\cite{ae09} and available with an open
@@ -385,30 +380,30 @@ evolutionary algorithm that will be presented next.
 
 \section{Results}
 \label{sec:res}
-%
-% \begin{table}[!htbp]
-% \begin{center}
-% \caption{Common evolutionary algorithm parameters}
-% \label{fig:ga_params}
-% \begin{tabular}{lc}%{p{3cm}p{7cm}}
-% \hline\noalign{\smallskip}
-% \noalign{\smallskip}
-% Parameter & Value \\
-% \hline
-% \noalign{\smallskip}
-% Chromosome length & 40 (Trap) 60 (MMDP)\\
-% Population size & 1024\\
-% Selection & 2 tournament selection \\
-% Replacement rate & 50\% \\
-% Mutation rate & 20\% \\
-% Crossover rate &  80\% \\
-% Max evaluations & 200K (Trap) 1 Million(MMDP) \\
-% Stopping criterion & Non-noisy best found or max evaluations reached \\
-% \hline
-% \end{tabular}
-% \end{center}
-% \end{table}
-%
+
+\begin{table*}[!htbp]
+\begin{center}
+\caption{Common evolutionary algorithm parameters}
+\label{fig:ga_params}
+\begin{tabular}{lc}%{p{3cm}p{7cm}}
+\hline\noalign{\smallskip}
+\noalign{\smallskip}
+Parameter & Value \\
+\hline
+\noalign{\smallskip}
+Chromosome length & 40 (Trap) 60 (MMDP)\\
+Population size & 1024\\
+Selection & 2 tournament selection \\
+Replacement rate & 50\% \\
+Mutation rate & 20\% \\
+Crossover rate &  80\% \\
+Max evaluations & 200K (Trap) 1 Million(MMDP) \\
+Stopping criterion & Non-noisy best found or max evaluations reached \\
+\hline
+\end{tabular}
+\end{center}
+\end{table*}
+
 ITA and WPO have been tested using two well-known benchmarks, the deceptive bimodal Trap \cite{deb1992analyzing}
 function and the Massively Multimodal Deceptive Problem \cite{goldberg92massive} (MMDP). 
 We chose to use just these two functions were chosen
@@ -426,18 +421,18 @@ particular case: we used 2-tournament with 50\% replacement, 20\%
 mutation and 80\% crossover, $p=1024$ and stopping when the best was
 found or number of evaluations reached. This was 200K for the Trap,
 which used 40 as chromosome size, and 1M for MMDP, which used 60 as
-chromosome size. We have also used an additive gaussian noise centered in zero
+chromosome size; these parameters are shown in Table \ref{fig:ga_params}. We have also used an additive Gaussian noise centered in zero
 and different $\sigma$, which is independent of the fitness values
 range. By default, noise will follow a normal distribution with center in 0 and $\sigma=1$.
 
 \begin{figure*}[htbp]
 \centering
 \subfloat[Memory size]{
-\includegraphics[width=0.4\textwidth]{../images/trap-evals-all.png}
+\includegraphics[width=0.5\textwidth]{../images/trap-evals-all.png}
 }
 ~
 \subfloat[Fitness distribution]{
-\includegraphics[width=0.4\textwidth]{../images/trap-noisy-evals.png}
+\includegraphics[width=0.5\textwidth]{../images/trap-noisy-evals.png}
 }
 \caption{(Left) Comparison of number of evaluations for the 4-Trap x
   10 function and the rest of the algorithms with a noise $\sigma$
@@ -472,7 +467,7 @@ actually worse than the 0-memory method. However, the scenario on the
 right,
  which shows how the number of evaluations scales with the noise
 level, is somewhat different. While the 0-memory method still has the
-least number of evaluations {\em for successful runs}, the success
+smallest number of evaluations {\em for successful runs}, the success
 rate degrades very fast, with roughly the same and slightly less than
 100\% for $\sigma=2$ but falling down to 63\% for 0-memory and around
 80\% for ITA and WPO (86\% and 80\%). That is, best success rate is
@@ -490,12 +485,12 @@ similar absolute $\sigma$, with the difference that, in this case,
 $\sigma=2$ would be 20\% of the max value, which is close to the one
 observed experimentally, as explained in the Section \ref{sec:noise}.
 
-\begin{figure}[!htbp]
+\begin{figure*}[ht!b]
 \centering
-\includegraphics[width=0.45\textwidth]{../images/evals-mmdp.png}
+\includegraphics[width=0.9\textwidth]{../images/evals-mmdp.png}
 \caption{Number of evaluations for successful runs ITA and WPO needed for solving the MMDP
   problem with 6 blocks and different noise levels, $\sigma=1,2$. \label{fig:mmdp:evals}}
-\end{figure}
+\end{figure*}
 %
 The evolutionary algorithm for MMDP used exactly the same parameters
 as for the Trap function above, except 
