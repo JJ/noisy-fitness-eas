@@ -12,31 +12,20 @@
 
 \title{Studying and tackling noisy fitness in evolutionary design of
   game characters}
-% Antonio - lo de 'taming'...weno, pero se podría especificar meor lo del uso de 'memoria'
 
-\author{\authorname{First Author Name\sup{1}, Second Author Name\sup{1} and Third Author Name\sup{2}}
-\affiliation{\sup{1}Institute of Problem Solving, XYZ University, My Street, MyTown, MyCountry}
-\affiliation{\sup{2}Department of Computing, Main University, MySecondTown, MyCountry}
-\email{\{f\_author, s\_author\}@ips.xyz.edu, t\_author@dc.mu.edu}
+\author{\authorname{J.J. Merelo\sup{1}, Pedro A. Castillo\sup{1}, Antonio
+  Mora\sup{1} , Antonio Fernández-Ares\sup{1}, Anna
+  I. Esparcia-Alcázar\sup{2}, Carlos  Cotta\sup{3}, Nuria
+  Rico \sup{4}}
+\affiliation{\sup{1}University of Granada, 
+       Department of Computer Architecture and Technology, ETSIIT,
+       18071 - Granada}
+\affiliation{\sup{2}S2Grupo}
+\affiliation{\sup{3}Universidad de Málaga,
+Departamento de Lenguajes y Sistemas Informáticos}
+\affiliation{\sup{4}Universidad de Granada; Depto. Estadística e Investigación Operativa}
+\email{\{jmerelo,pedro,amorag,antares\}@geneura.ugr.es,aiesparcia@s2grupo.es,ccottap@lcc.uma.es,nrico@ugr.es}
 }
-
-% \author{J.J. Merelo\inst{1} \and Pedro A. Castillo\inst{1} \and Antonio
-%   Mora\inst{1}  \and Antonio Fernández-Ares\inst{1} \and Anna I. Esparcia-Alcázar\inst{2} \and Carlos  Cotta\inst{3}}
-% % Antonio - ¿No participaba Nuria también?
-
-% \institute{University of Granada\\
-%        Department of Computer Architecture and Technology, ETSIIT\\
-%        18071 - Granada\\
-%        \email{\{jmerelo,pedro,amorag,antares\}@geneura.ugr.es}
-% \and
-% S2Grupo\\
-% \email{aiesparcia@s2grupo.com}
-% \and
-% Universidad de Málaga\\
-% Departamento de Lenguajes y Sistemas Informáticos\\
-% \email{ccottap@lcc.uma.es}
-% }
-
 
 \keywords{Evolutionary algorithms, noisy optimization problems, games,
   strategy games}
@@ -83,8 +72,12 @@ algorithmic terms of one method over the other.
 %--------------------------------------------------------------------------
 
 \section{Introduction}
-
-Noise in fitness has different origins. It can be inherent to the
+In our research on the optimization of the behavior of bots or game
+strategies, we have frequently found that the fitness of a bot is {\em
+  noisy}, in the sense that repeated evaluations will yield different
+values \cite{DBLP:journals/jcst/MoraFGGF12} which is a problem since
+fitness is the measure used to select individuals for reproduction. If
+we look at in in a more general setting, noise in the fitness of individuals in the context of an evolutionary algorithm has different origins. It can be inherent to the
 individual that is evaluated; for instance, in 
 \cite{DBLP:journals/jcst/MoraFGGF12} a game-playing bot (autonomous agent) that includes a set of application rates is optimized. This results in different
 actions in different runs, and obviously different success rates and
@@ -154,8 +147,8 @@ explained next.
 An usual approach is just disregarding the fact that the fitness is
 noisy and using whatever value is returned each time or after
 re-evaluation each generation. 
-This is the usual approach in % our
-previous research \cite{castilloGECCO99,bots:evostar} and leads, if
+This is the usual approach in  our
+previous research \cite{castilloGECCO99} and leads, if
 the population is large enough, to an {\em implicit averaging} as
 mentioned in \cite{Jin2005303}. In fact, evolutionary algorithm
 selection is also stochastic, so noise in fitness evaluation
@@ -251,16 +244,15 @@ as the evolution proceeds, going from around 0.15 to around 0.20.
 %
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{sd.png}
+\includegraphics[width=0.4\textwidth]{../images/sd.png}
 \caption{Boxplot of standard deviation of noise fitted to a normal
   distribution, left for the first generation and right for the
   50th. Fitness averages around 1. \label{fig:sd}}
 \end{figure}
-
-This might, in fact, be a bit misleading since the average values of
-the fitness increase at the same time, but it does mean that the noise
-level might be around 20\% of the {\em signal} in problems such as
-this one. 
+%
+which might be a bit misleading since the average values of
+the fitness increase at the same time, but it implies that the noise
+level might be around 20\% of the {\em signal} in these kind of problems. 
 
 But we were also interested in checking whether, in fact, the normal
 distribution is the best fit for the fitness measures. We tested three
@@ -282,9 +274,9 @@ generation 50. The fit for an individual in the first generation that
 does follow that distribution (individual 8) is shown in figure
 \ref{fig:indi8}. 
 %
-\begin{figure*}
+\begin{figure*}[!t]
 \centering
-\includegraphics[scale=0.8]{indi8.png}
+\includegraphics[scale=0.8]{../images/indi8.png}
 \caption{Fit of the fitness value of an individual in the first
   generation of the evolutionary algorithm to a gamma distribution,
   showing an histogram in the top left corner, CDFs in the bottom left
@@ -365,126 +357,87 @@ Wilcoxon-test based partial order, or {\sf WPO} for short.
 % Antonio - cursiva. ;)
 % san serif - JJ
 
-\begin{figure*}
-\centering
-\subfloat[Memory size]{
-\includegraphics[width=0.45\textwidth]{memory-size.png}
-}
-~
-\subfloat[Fitness distribution]{
-\includegraphics[width=0.45\textwidth]{fitness-distribution.png}
-}
-\caption{(Left) 3D plot of the distribution of memory sizes for a single
-  execution of the Wilcoxon-test based partial order. (Right)
-  3d plot of the distribution of fitness values along time for the WPO
-  method on the Trap function. \label{fig:initial}}
-\end{figure*}
-% Antonio - por qué están las figuras 'torcidas'? La Z normalmente está vertical
-% No he visto mejor forma de sacarlas - JJ
-Initial tests were made with these two types of algorithms and the
-Trap function \cite{wilcoxon:ga}, showing the best results for the WPO method  and both of them being better, on that problem, that
-the implicit average method that uses a single noisy evaluation per individual. 
-% Antonio - la frase anterior no parece bien escrita
-% sí lo está, pero he aclarado algo por si acaso  JJ 
-The only aspect in which this method is better is in speed and memory
-footprint. Since it does not need to perform averages or make
+Initial tests, programmed in Perl using {\tt
+  Algorithm::Evolutionary}~\cite{ae09} and available with an open
+source license at \url{http://git.io/a-e} were made with these two types of algorithms and the
+Trap function \cite{wilcoxon:ga}, showing the best results for the WPO
+method and both of them being better that
+the implicit average method that uses a single evaluation per
+individual, although they needed more time and memory. Since it does not need to perform averages or make
 additional fitness measures every generation, it is twice as fast as
 the next method, the one that uses explicit average fitness. An
-exploration of memory sizes (shown in Figure \ref{fig:initial}, left; a rotating version of the graph is published in
-  \url{http://jj.github.io/Algorithm-Evolutionary/graphs/memory/}) for a
-typical run) showed that there is an uneven distribution of memory
-sizes and thus ages but, in general, there is no single memory size
-overcoming all the population. Besides, distribution of fitness, shown
-for a typical run in Figure \ref{fig:initial} (right, also published at
-  \url{http://jj.github.io/Algorithm-Evolutionary/graphs/fitness-histo/}) shows a
+exploration of memory sizes (published in
+  \url{http://jj.github.io/Algorithm-Evolutionary/graphs/memory/} for a
+typical run) showed that they are distributed unevenly but, in general, there is no single memory size
+overcoming all the population. Besides, distribution of fitness, published at
+  \url{http://jj.github.io/Algorithm-Evolutionary/graphs/fitness-histo/} shows a
 distribution with most values concentrated along the middle (that is,
 fitness equal to 10 or individuals that cannot be compared with any
 other, together with a few with the highest fitness and many with the
 lowest fitness. Besides showing that using the partial order for individual selection 
-% Antonio - partial order respecto a qué?
-% respecto a nada. Es una relación entre individuos Aclarado - JJ
 is a valid strategy, it also shows that a too greedy selection method would
-eliminate many individuals that might, in fact, have a high fitness if
-only given the chance to be evaluated for another generation. This
+eliminate many individuals that might, in fact, have a high fitness. This
 will be taken into account when assigning parameter values to the
 evolutionary algorithm that will be presented next.
 
-All these initial tests have been programmed using {\tt
-  Algorithm::Evolutionary}
-% Antonio - Evolu-i-tionary? Supongo que no, pero por si le hicite algún cambio y lo renombraste. :D
-% corregido - JJ
- (in Perl) \cite{ae09} and code and data
-% Antonio - esa cita no está en el bib
-% Está en geneura.bib - JJ
-are available under an open source licence from the library
-repository at GitHub
-\url{https://github.com/JJ/Algorithm-Evolutionary/}. However, it was
-clear from these tests that the type of problems in which every method
-works the best needs to be characterized, so we will drill further
-into this with another set of experiments that will be presented
-next. 
 
 %--------------------------------------------------------------------------
 
 \section{Results}
 \label{sec:res}
 %
-\begin{table*}[!htbp]
-\begin{center}
-\caption{Common evolutionary algorithm parameters}
-\label{fig:ga_params}
-\begin{tabular}{lc}%{p{3cm}p{7cm}}
-\hline\noalign{\smallskip}
-\noalign{\smallskip}
-Parameter & Value \\
-\hline
-\noalign{\smallskip}
-Chromosome length & 40 (Trap) 60 (MMDP)\\
-Population size & 1024\\
-Selection & 2 tournament selection \\
-Replacement rate & 50\% \\
-Mutation rate & 20\% \\
-Crossover rate &  80\% \\
-Max evaluations & 200K (Trap) 1 Million(MMDP) \\
-Stopping criterion & Non-noisy best found or max evaluations reached \\
-\hline
-\end{tabular}
-\end{center}
-\end{table*}
+% \begin{table}[!htbp]
+% \begin{center}
+% \caption{Common evolutionary algorithm parameters}
+% \label{fig:ga_params}
+% \begin{tabular}{lc}%{p{3cm}p{7cm}}
+% \hline\noalign{\smallskip}
+% \noalign{\smallskip}
+% Parameter & Value \\
+% \hline
+% \noalign{\smallskip}
+% Chromosome length & 40 (Trap) 60 (MMDP)\\
+% Population size & 1024\\
+% Selection & 2 tournament selection \\
+% Replacement rate & 50\% \\
+% Mutation rate & 20\% \\
+% Crossover rate &  80\% \\
+% Max evaluations & 200K (Trap) 1 Million(MMDP) \\
+% Stopping criterion & Non-noisy best found or max evaluations reached \\
+% \hline
+% \end{tabular}
+% \end{center}
+% \end{table}
 %
 ITA and WPO have been tested using two well-known benchmarks, the deceptive bimodal Trap \cite{deb1992analyzing}
 function and the Massively Multimodal Deceptive Problem \cite{goldberg92massive} (MMDP). 
-% Antonio - Acabas de nombrar al MMDP por primera vez en el artículo. Parecía que sólo ibas a usar Trap. Además habría que medio explicarlo o poner una cita. ;)
-% puestas dos - JJ
 We chose to use just these two functions were chosen
 because they have different fitness landscapes, are usually difficult
 for an evolutionary algorithm and have been extensively used for
 testing other kind of operators and algorithms.
-% Antonio - Qué pasó con el fitness de Antares?
-% Me dio la forma de la función, que era aproximadamente gaussiana - JJ
- Besides, they are part
-of the {\tt Algorithm::Evolutionary} standard set of fitness
-functions \cite{ae:gh}. 
 
 Several methods were tested: a baseline algorithm without
-noise, that gave us an idea on the time and number of evaluations
+noise to establish the time and number of evaluations
 needed to find the solution, a 0-memory (implicit average) method that
 uses noisy fitness without making any special arrangement, ITA and
-WPO. Evolutionary algorithm parameters (listed in Table \ref{fig:ga_params})  and code for all tests were the same (except in one
-particular case. We have also used an additive gaussian noise centered in zero
+WPO. Evolutionary algorithm parameters and code for all tests were the
+same, except in one
+particular case: we used 2-tournament with 50\% replacement, 20\%
+mutation and 80\% crossover, $p=1024$ and stopping when the best was
+found or number of evaluations reached. This was 200K for the Trap,
+which used 40 as chromosome size, and 1M for MMDP, which used 60 as
+chromosome size. We have also used an additive gaussian noise centered in zero
 and different $\sigma$, which is independent of the fitness values
 range. By default, noise will follow a normal distribution with center in 0 and $\sigma=1$.
-% Antonio - explicar un poco esto del ruido centrado en sigma, que es la parte fundamental del trabajo (de los experimentos) y muchos lectores (como yo :D) no lo sabrán.
-% Es ruido gaussiano. Explicado. - JJ
 
 \begin{figure*}[htbp]
 \centering
 \subfloat[Memory size]{
-\includegraphics[width=0.5\textwidth]{trap-evals-all.png}
+\includegraphics[width=0.4\textwidth]{../images/trap-evals-all.png}
 }
 ~
 \subfloat[Fitness distribution]{
-\includegraphics[width=0.5\textwidth]{trap-noisy-evals.png}
+\includegraphics[width=0.4\textwidth]{../images/trap-noisy-evals.png}
 }
 \caption{(Left) Comparison of number of evaluations for the 4-Trap x
   10 function and the rest of the algorithms with a noise $\sigma$
@@ -537,12 +490,12 @@ similar absolute $\sigma$, with the difference that, in this case,
 $\sigma=2$ would be 20\% of the max value, which is close to the one
 observed experimentally, as explained in the Section \ref{sec:noise}.
 
-\begin{figure*}[!htbp]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.6\textwidth]{evals-mmdp.png}
+\includegraphics[width=0.45\textwidth]{../images/evals-mmdp.png}
 \caption{Number of evaluations for successful runs ITA and WPO needed for solving the MMDP
   problem with 6 blocks and different noise levels, $\sigma=1,2$. \label{fig:mmdp:evals}}
-\end{figure*}
+\end{figure}
 %
 The evolutionary algorithm for MMDP used exactly the same parameters
 as for the Trap function above, except 
@@ -565,12 +518,8 @@ for $\sigma=1$, however, if we take the time needed to reach solutions
 into account, ITA is much faster since it does not apply 10*1024
 statistical tests every generation. However, WPO is more robust, with
 a lower standard deviation, in general, at least for high noise
-levels. 
-
-At any rate, both methods obtain a good result with a much higher
+levels. However, both methods obtain a good result with a much higher
 success rate than the implicit fitness (0-memory) method. Besides, ITA and APO 
-% Antonio - a qué se refiere el 'it'?
-% a los dos métodos, corregido - JJ
 incorporate explicit fitness evaluation naturally into the population
 {\em resampling} only surviving individuals. This accounts for a
 predictable behaviour of the algorithm, since the number of evaluations
@@ -620,8 +569,8 @@ levels are higher. These are scenarios that are left for future
 research, and destined to find out in which situations WPO is better
 than ITA and the other way round. 
 
-Finally, there are other free parameters that will have to be
-explored. The first one is the number of comparisons in WPO. Initial
+Besides exploring noise in different problems and modelling its
+distribution, we will explore different parameters. The first one is the number of comparisons in WPO. Initial
 explorations have proved that changing it from 5 to 32 does not yield
 a significant difference. Looking for a way to speed up this method
 would also be important since it would make its performance closer to
@@ -632,32 +581,10 @@ know, however, which is this number, but in long runs it would be
 interesting to cap fitness memory size to a sensible number, or, in
 any case, see the effect of doing it. 
 
-From the point of view of the noise, we will have to examine the
-nature of the noisy fitness in many different experiments so that we
-can model more accurately the way it works and propose changes to the
-evolutionary algorithm to deal with them. This evolutionary algorithm
-will also have to take into account a more accurate Gamma
-distribution, instead of the normal distribution used in this paper,
-as well as the noise levels found experimentally.
-
-
 \section{Acknowledgments}
 
-% {\small This work has been supported in part by project ANYSELF
-% (TIN2011-28627-C04-02 and -01).
-% The authors would like to thank the FEDER of European Union for
-% financial support via project "Sistema de Información y Predicción de
-% bajo coste y autónomo para conocer el Estado de las Carreteras en
-% tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the
-% "Programa Operativo FEDER de Andalucía 2007-2013". We also thank all
-% Agency of Public Works of Andalusia Regional Government staff and
-% researchers for their dedication and professionalism.}
-
-% \begin{figure*}
-% \begin{center}
-% \includegraphics[width=3cm]{logos_SIPESCA_2.jpg}
-% \end{center}
-% \end{figure*}
+{\small This work has been supported in part by project ANYSELF
+(TIN2011-28627-C04-02 and -01)}.
 
 \bibliographystyle{apalike}
 \bibliography{geneura,wilcoxon}  % sigproc.bib is the name of the Bibliography in this case
