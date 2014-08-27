@@ -144,11 +144,10 @@ other types of noise. In this situation, several solutions were been
 proposed and explained in the survey \cite{Jin2005303}. These will be
 explained next.
 
-An usual approach is just disregarding the fact that the fitness is
-noisy and using whatever value is returned each time or after
-re-evaluation each generation. 
-This is the usual approach in  our
-previous research \cite{castilloGECCO99} and leads, if
+An usual approach is just disregard the fact that the fitness is
+noisy and using whatever value is returned a single time or after
+re-evaluation each generation. This was the option in our
+previous research in games and evolution of neural networks \cite{castilloGECCO99,bots:evostar,merelo:ESNN} and leads, if
 the population is large enough, to an {\em implicit averaging} as
 mentioned in \cite{Jin2005303}. In fact, evolutionary algorithm
 selection is also stochastic, so noise in fitness evaluation
@@ -351,6 +350,21 @@ are never significant according to the Wilcoxon test will score
 exactly 10, the same as if it wins as many times as it loses, and the
 one that always loses will score 0. We will call this method
 Wilcoxon-test based partial order, or {\sf WPO} for short.
+%
+\begin{figure*}[t!b]
+\centering
+\subfloat[Memory size]{
+\includegraphics[width=0.5\textwidth]{../images/memory-size.png}
+}
+~
+\subfloat[Fitness distribution]{
+\includegraphics[width=0.5\textwidth]{../images/fitness-distribution.png}
+}
+\caption{(Left) 3D plot of the distribution of memory sizes for a single
+execution of the Wilcoxon-test based partial order. (Right)
+3d plot of the distribution of fitness values along time for the WPO
+method on the Trap function. \label{fig:initial}}
+\end{figure*}
 
 Initial tests, programmed in Perl using {\tt
   Algorithm::Evolutionary}~\cite{ae09} and available with an open
@@ -362,7 +376,7 @@ individual, although they needed more time and memory. Since it does not need to
 additional fitness measures every generation, it is twice as fast as
 the next method, the one that uses explicit average fitness. An
 exploration of memory sizes (published in
-  \url{http://jj.github.io/Algorithm-Evolutionary/graphs/memory/} for a
+  \url{http://jj.github.io/Algorithm-Evolutionary/graphs/memory/} and shown in Figure \ref{fig:initial} for a
 typical run) showed that they are distributed unevenly but, in general, there is no single memory size
 overcoming all the population. Besides, distribution of fitness, published at
   \url{http://jj.github.io/Algorithm-Evolutionary/graphs/fitness-histo/} shows a
@@ -422,8 +436,7 @@ mutation and 80\% crossover, $p=1024$ and stopping when the best was
 found or number of evaluations reached. This was 200K for the Trap,
 which used 40 as chromosome size, and 1M for MMDP, which used 60 as
 chromosome size; these parameters are shown in Table \ref{fig:ga_params}. We have also used an additive Gaussian noise centered in zero
-and different $\sigma$, which is independent of the fitness values
-range. By default, noise will follow a normal distribution with center in 0 and $\sigma=1$.
+and different $\sigma$, which is independent of the range of variation of the fitness values. By default, noise will follow a normal distribution with center in 0 and $\sigma=1$.
 
 \begin{figure*}[htbp]
 \centering
@@ -487,16 +500,13 @@ observed experimentally, as explained in the Section \ref{sec:noise}.
 
 \begin{figure*}[ht!b]
 \centering
-\includegraphics[width=0.9\textwidth]{../images/evals-mmdp.png}
+\includegraphics[width=1\textwidth]{../images/evals-mmdp.png}
 \caption{Number of evaluations for successful runs ITA and WPO needed for solving the MMDP
   problem with 6 blocks and different noise levels, $\sigma=1,2$. \label{fig:mmdp:evals}}
 \end{figure*}
 %
 The evolutionary algorithm for MMDP used exactly the same parameters
-as for the Trap function above, except 
-% Antonio - execpt for?
-% no - JJ
-the max number of evaluations
+as for the Trap function above, except the max number of evaluations, which
 was boosted to one million. Initial tests with the 0-memory method
 yielded a very low degree of success, which left only the two methods
 analyzed in this paper for testing with MMDP. 
@@ -578,8 +588,21 @@ any case, see the effect of doing it.
 
 \section{Acknowledgments}
 
-{\small This work has been supported in part by project ANYSELF
-(TIN2011-28627-C04-02 and -01)}.
+This work has been supported in part by project ANYSELF
+(TIN2011-28627-C04-02 and -01).
+The authors would like to thank the FEDER of European Union for
+financial support via project "Sistema de Información y Predicción de
+bajo coste y autónomo para conocer el Estado de las Carreteras en
+tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the
+"Programa Operativo FEDER de Andalucía 2007-2013". We also thank all
+Agency of Public Works of Andalusia Regional Government staff and
+researchers for their dedication and professionalism.
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=10cm]{../images/logos_SIPESCA_2.jpg}
+\end{center}
+\end{figure*}
 
 \bibliographystyle{apalike}
 \bibliography{geneura,wilcoxon}  % sigproc.bib is the name of the Bibliography in this case
