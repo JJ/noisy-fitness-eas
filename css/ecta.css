@@ -129,8 +129,12 @@ h1.img {font-size:5em;
 	padding: 20px;
 	font-family: "Montserrat", sans-serif;
 	color: #443266;
-	background-color: rgba(241,240,255,0.4);;
+	background-color: rgba(241,240,255,0.4);
        }
+
+.img {
+    background-color: rgba(241,240,255,0.4);
+}
 
 h1.right { position: absolute;
 	   top:30px;
@@ -161,6 +165,7 @@ ol, ul {font-size:2.5em;
 
 h3 {font-size:2em;
     font-family: "Roboto", sans-serif;}
+
 
 code { 
        font-family: Lekton, Courier, Courier New, monospace;
