@@ -22,15 +22,17 @@ section {
 	background-color: #f1f0ff;
 
 	display: block;
-	padding: 30px 50px;
-	border-radius: 15px;
+	padding: 40px 50px; 
 
 	box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
-	border: 1px solid rgba(0, 0, 0, .3);
+/*	border: 1px solid rgba(0, 0, 0, .3); */
 	
         color: rgb(102, 102, 102);
 	text-shadow: 0 2px 2px rgba(0, 0, 0, .1);
 	
+	opacity: 0.3;	 
+	background: #ccc;
+	border-radius: 30px;
 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing:    border-box;
@@ -45,8 +47,16 @@ section {
 	transition:         opacity 1s;
 }
 
-section { opacity: 0.3; }
-section.nested-active, section.active, section.active section { opacity: 1 }
+section.nested-active, section.active, section.active section { 
+    border-radius: 30px;
+    border-style: solid; 
+    border-width: 20px; 
+    -moz-border-image: url(http://upload.wikimedia.org/wikipedia/commons/f/f6/White-noise-mv255-240x180.png) 22 27 21 repeat; 
+    -webkit-border-image: url(http://upload.wikimedia.org/wikipedia/commons/f/f6/White-noise-mv255-240x180.png) 22 27 21 repeat; 
+    -o-border-image: url(http://upload.wikimedia.org/wikipedia/commons/f/f6/White-noise-mv255-240x180.png) 22 27 21 repeat; 
+    border-image: url(http://upload.wikimedia.org/wikipedia/commons/f/f6/White-noise-mv255-240x180.png) 10% repeat;
+    opacity: 1 
+}
 
 /*
 section.active {
@@ -85,6 +95,7 @@ section:not(.active) {
 	-o-transition:      opacity 1s,      -o-transform 0.5s 1s;
 	transition:         opacity 1s,         transform 0.5s 1s;
 }
+
 .step-home + .hint {
 	opacity: 1;
 
@@ -229,3 +240,4 @@ p.image {
 span.smaller { font-size:0.8em }
 span.hilite { font-size:1.1em;
 	      background-color: yellow }
+
