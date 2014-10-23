@@ -1,6 +1,7 @@
-wilcoxon-ga-ecta
-================
 
-Using Wilcoxon comparisons to find the best in noisy function
-environments, paper for PPSN and further. Version of the file for the ECTA-IJCCI conference
+PPSN 2014 workshop presentation
+==========
+
+This will include [the usual presentation using jmpress](http://mariosky.github.io/PPSN2014) which you can watch preferably using Chromium/Chrome.
+
 
