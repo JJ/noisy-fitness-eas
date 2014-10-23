@@ -55,161 +55,10 @@
       
       <!-- Slides starts here -->
       <section>
-	<h1 class='img'>Setting evolutionary algorithm parameters is hard</h1>
-	<img src='img/computers.jpg' src='Early computers by Josh Graciano' >
-	<p class='image'>Flickr image by <a href='https://flic.kr/p/aHKm1R'>  Josh Graciano @<code>flic.kr/p/aHKm1R</code></a></p>
-      </section>
-      
-      <section>
-	<h1 class='img'>Even more so when there are hundreds of them</h1>
-	<img src='img/dials.jpg' src='Mixer knobs by  Nathanael Coyne' >
-	<p class='image'>Flickr image by <a href='https://flic.kr/p/sKjX3'> Nathanael Coyne @<code>flic.kr/p/sKjX3</code></a></p>
-      </section>
-
-      <section>
-	<h1>My parameters are better than your parameters</h1>
-      </section>
-      
-      <section>
-	<h1>And there is no free lunch in distributed evolutionary algorithms</h1>
-      </section>
-
-      <section>
-	<h1 class='img'>So why not try a Randomized Parameter Setting Strategy (RPSS)?</h1>
-	<img src='img/clocks.jpg' src='Bombay clocks by  mybigtrip' >
-	<p class='image'>Flickr image by <a href='https://flic.kr/p/xjH5'> Nathan Nelson @<code>flic.kr/p/xjH5</code></a></p>
-   
-      </section>
-
-      <section>
-	<h1 class='img'>Pool-based evolutionary algorithms: not so canonical any more</h1>
-	<img src='img/pool-nuns.jpg' src='nuns and pool Lorianne diSabato' >
-	<p class='image'>Flickr image by <a href=' https://flic.kr/p/nXfbQ6'>Lorianne diSabato  @<code>flic.kr/p/nXfbQ6</code></a></p>
-	
-      </section>
-
-       <section>
-	<h1 class='aside'>Detaching population from operations</h1>
-	
-	<img class='figures' src='img/poolbased.png' alt='pool schema'>
-
-	<h3 class='aside'>Chromosomes are taken from a persistent pool and brought back after evaluation, mutation, crossover</h3>
-      </section>
-
-      <section>
-	<h1 class='img'>Three good things about pool-based EAs</h1>
-	<img src='img/3fingers.jpg' alt='3 problems'>
-	<p class='image'>Flickr image by <a href='https://www.flickr.com/photos/mutsmuts/6007667842'>Mutiara Karina <code>https://flic.kr/p/a9SSm3</code></a>.</p>
-      </section>
-
-      <section>
-	<h1>1. Self-organizing clients</h1>
-	<h2>2. Fully asynchronous</h2>
-	<h3>3. Persistent population</h3>
-      </section>
-
-      <section>
-	<h1>...but still the same problem</h1>
-
-	<img src='img/dials.jpg' src='Mixer knobs by  Nathanael Coyne' >
-	<h2>... or worse</h2>
-	<p class='image'>Flickr image by <a href='https://flic.kr/p/sKjX3'> Nathanael Coyne @<code>flic.kr/p/sKjX3</code></a></p>
-      </section>
-
-      <section>
-	<h1 class='img'>EvoSpace: have a free lunch and eat it too</h1>
-	<img src='img/tea-and-scones.jpg' alt='tea and scones by Ian' >
-	<p class='image'>Image by <a href='https://www.flickr.com/photos/ian-s/13448996934'>Ian at <code>https://flic.kr/p/murCeu</code></a></p>
-      </section>
-
-      <section>
-	<h2>EvoSpace: a cloudy pool-based EA</h2>
-	<img class='figures' src='img/evospaceExample.png' alt='evospace architecture'>
-      </section>
-
-      <section>
-	<h1>EvoSpace uses the tuple space model.</h1>
-
-	<h2>Clients are expected to be unreliable</h2>
-
-	<h3>Population pulled in <em>blocks</em></h3>
-      </section>
-
-      <section>
-	<h1>EvoWorkers of the world, unite for optimization</h1>
-
-	<ol><li>Clients == EvoWorkers extract chromosomes</li>
-	    <li>They leave <em>ghosts</em></li>
-	    <li>Run for <em>n</em> generations</li>
-	    <li>Return to pool, erasing <em>ghosts</em></li>
-	    <li>No return? <em>Ghosts reinserted</em></li></ol>
-      </section>
-
-       <section>
-	<h1>Evospace implementation</h1>
-	<h2><em>Server-side</em>: Redis + CherryPy.</h2>
-       <h2>Client side: web services consumers. Here: DEAP</h2>
-      </section>
-
-       <section>
-	<h1>EvoSpace is open source</h1>
-
-	<h2>Try it out at <a href='http://github.com/mariosky/PPSN2014'>GitHub</a></h2>
-      </section>
-      
-      <section>
-        <h1>Random Parameter Setting Strategy (RPSS) does P-Peaks (and others too)</h1>
-	<h2>P-Peaks is the minimum distance to P binary strings</h2>
-	<h3>Hard problem for EAs</h3>
-      </section>
-
-       <section>
-        <h1>There's method in my serendipity</h1>
-	<h2>Changing Crossover and Mutation <code>[0,1]</code>, Sample Size <code>[12,24]</code>, Generations per run <code>[5,30]</code></h2>
-      </section>
-
-      <section>
-        <h1>Now fight</h1>
-
-	<h2>It's Average Homogeneous (<span class='smaller'>200 runs different random parameters</span>) vs Best Homogeneous (<span class='smaller'>best from above</span>) vs Average Heterogenous <span class='hilite'>(RPSS)</span></h2>
-      </section>
-
-       <section>
-        <h1 class='img'>Solving problems using serendipity</h1>
-	<img src='img/valley.jpg' alt='Local minimum: valley' >
-	
-	<h2>P-Peaks with <em>P=200</em> peaks, 100-bit strings</h2>
-	<p class='image'>Image from <a href='https://www.flickr.com/photos/library_of_congress/3175018738'>Library of congress</a></p>
-      </section>     
-
-      <section>
-        <h1>EvoWorking on the chain gang</h1>
-
-	<h2>Testing with a different number of EvoWorkers: 16, 120</h2>
-      </section>
-
-      <section>
-	<h1>Sixteen different workers</h1>
-	<img class='figures' src='img/PPeaks-w16.png' alt='evospace 16 workers'>
-      </section>
-
-      <section>
-	<h1>Upping the ante to 120 EvoWorkers</h1>
-	<img class='figures' src='img/PPeaks-w120.png' alt='evospace 16 workers'>
-      </section>
-
-      <section>
-	<h1>The more, the merrier</h1>
-	<ul>
-	  <li>RPSS obtains results roughly similar to Best-homogeneous.</li>
-	  <li>RPSS is <span class='hilite'>always</span> better than homogeneous</li>
-	  <li>But we don't need to run 200 examples to find the best!</li>
-	</ul>
-      </section>
 
       <section>
 	<h1>Open Science!</h1>
-	<h2>All source, parameters for experiments, data available from <a href='http://github.com/mariosky/PPSN2014'>git.io/ppsn14</a></h2>
+	<h2>All source, parameters for experiments, data available from <a href='http://github.com/JJ/noisy-fitness-eas'><code>TODO</code></a></h2>
       </section>
 
     </section>
@@ -219,7 +68,7 @@
 
       <h1>Any question?</h1>
       
-      <h3>Download/fork this presentation from <a href='http://github.com/mariosky/PPSN2014'><code>git.io/ppsn14</code></a></h3>
+      <h3>Download/fork this presentation from <a href='http://github.com/JJ/noisy-fitness-eas'><code>TODO</code></a></h3>
     </section>
 
 <!-- Slides end here -->
