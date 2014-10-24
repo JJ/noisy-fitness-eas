@@ -257,5 +257,6 @@ p.image {
 
 span.smaller { font-size:0.8em }
 span.hilite { font-size:1.1em;
-	      background-color: yellow }
+	      background-color: yellow;
+	    color:DarkSlateGray}
 
