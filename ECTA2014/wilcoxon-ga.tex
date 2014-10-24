@@ -317,25 +317,18 @@ outright if their fitness computed after a single evaluation is not
 enough to participate in the pool, while  {\em older} ones use several
 measures to compute average fitness, which means that averages will be
 a more precise representation of actual value. 
-% Antonio - actual -> real/descriptive?
-% Antonio, por favor. "Actual" en inglés significa "real" - JJ
 As evolution proceeds,
 the best individuals will, effectively, have an underlying non-noisy
 best value. We will call this method {\em incremental temporal average}
 or {\sf ITA}. 
 
 However, since average is a single value, selection methods might, in
-fact, select as better individuals 
-% Antonio - as best?
-% better. comparando entre dos - JJ
-some that are not if the comparison
+fact, select as the best individuals some that are not if the comparison
 is not statistically significant; this will happen mainly in the first
 and middle stages of search, which might effectively eliminate from
 the pool or not adequately represent individuals that constitute, in
 fact, good solutions. That is why we introduce an additional feature:
 using Wilcoxon test \cite{wilcoxon:1945}
-% Antonio - Wilcoxon test? Poner cita y/o breve explicación del test...
-% añadida. - JJ
 for comparing not the average, but all
 fitness values attached to an individual. This second method
 introduces a partial order in the population pool: two individuals
@@ -600,8 +593,8 @@ researchers for their dedication and professionalism.
 
 Our research group is committed to Open Science and the writing and
 development of this paper has been carried out in GitHub at this
-address \url{https://github.com/JJ/wilcoxon-ga-ecta}. We encourage you
-to visit, comment and to all kind of suggestions. 
+address \url{https://github.com/JJ/noisy-fitness-eas}. We encourage you
+to visit, comment and to do all kind of suggestions or feature requests.
 
 \begin{figure*}
 \begin{center}
