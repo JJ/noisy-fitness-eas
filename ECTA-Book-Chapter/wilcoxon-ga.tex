@@ -10,18 +10,20 @@
 \begin{document}
 
 \title{An statistical approach to dealing noisy fitness in evolutionary algorithms}
+% Zeineb - A statistical approach to deal with noisy fitness in evolutionary algorithms
+% Zeineb - A statistical approach dealing with noisy fitness in evolutionary algorithms
 
 \author{J.J. Merelo, Pedro A. Castillo, Antonio
-  Mora, Antonio Fern·ndez-Ares, Anna
-  I. Esparcia-Alc·zar, Carlos Cotta, Nuria
+  Mora, Antonio Fern√°ndez-Ares, Anna
+  I. Esparcia-Alc√°zar, Carlos Cotta, Nuria
   Rico}
 \institute{University of Granada, 
        Department of Computer Architecture and Technology, ETSIIT, and CITIC \url{http://citic.ugr.es}
        18071 - Granada, Spain \\ 
 S2Grupo, Valencia, Spain\\
-Universidad de M·laga,
-Departamento de Lenguajes y Sistemas Inform·ticos, M·laga, Spain\\
-Universidad de Granada; Depto. EstadÌstica e InvestigaciÛn Operativa, Granada, Spain
+Universidad de M√°laga,
+Departamento de Lenguajes y Sistemas Inform√°ticos, M√°laga, Spain\\
+Universidad de Granada; Depto. Estad√≠stica e Investigaci√≥n Operativa, Granada, Spain
 \email{\{jmerelo,pedro,amorag,antares\}@geneura.ugr.es,aiesparcia@s2grupo.es,\\
 ccottap@lcc.uma.es,nrico@ugr.es}
 }
@@ -65,7 +67,9 @@ strategies, we have frequently found that the fitness of a bot is {\em
   noisy}, in the sense that repeated evaluations will yield different
 values \cite{DBLP:journals/jcst/MoraFGGF12} which is a problem since
 fitness is the measure used to select individuals for reproduction. If
-we look at in in a more general setting, noise in the fitness of individuals in the context of an evolutionary algorithm has different origins. It can be inherent to the
+we look at in in a more general setting, 
+% Zeineb - If we look at it in a more general setting, ... ("it" not "in")
+noise in the fitness of individuals in the context of an evolutionary algorithm has different origins. It can be inherent to the
 individual that is evaluated; for instance, in 
 \cite{DBLP:journals/jcst/MoraFGGF12} a game-playing bot (autonomous agent) that includes a set of application rates is optimized. This results in different
 actions in different runs, and obviously different success rates and
@@ -82,16 +86,16 @@ schedules will result in slightly different success rates.
 
 The examples mentioned above are included actually in one or the four categories
 where uncertainties in fitness are found, fitness functions with intrinsic noise. These four types include also,
-% Antonio - øcÛmo se llama la categorÌa que has contado arriba?
-% olvidado y aÒadido - JJ 
+% Antonio - ¬øc√≥mo se llama la categor√≠a que has contado arriba?
+% olvidado y a√±adido - JJ 
 according to \cite{Jin2005303} approximated fitness functions
 (originated by, for instance, surrogate models); robust functions,
 where the main focus is in finding values with high tolerance to
 change in initial evaluation conditions, and finally dynamic fitness
 functions, where the {\em inherent} value of the function changes with
 time. 
-% Antonio - yo desarrollarÌa un poco m·s los diferentes tipos y en quÈ tipo de problemas se encuentran, por ejemplo, ya que la intro queda un poco escueta
-% Es que no cabe m·s. 
+% Antonio - yo desarrollar√≠a un poco m√°s los diferentes tipos y en qu√© tipo de problemas se encuentran, por ejemplo, ya que la intro queda un poco escueta
+% Es que no cabe m√°s. 
 Our main interest will be in the first type, since it is the one
 that we have actually met in the past and which has led to the development
 of this work. 
@@ -102,7 +106,7 @@ that we actually have found in problems so far. In fact, from the
 point of view of dealing with fitness, these are the main features of
 noise we will be interested in. 
 
-% Antonio - explicar quÈ se har· en el artÌculo para simular estos fitness, el Wilcoxon tournament, o al menos describir los experimentos
+% Antonio - explicar qu√© se har√° en el art√≠culo para simular estos fitness, el Wilcoxon tournament, o al menos describir los experimentos
 % explicado algo - JJ
 
 The rest of the paper is organized as follows: next we describe the
@@ -131,10 +135,13 @@ category. In any case it could be applied to
 other types of noise. In this situation, several solutions were been
 proposed and explained in the survey \cite{Jin2005303}. These will be
 explained next.
-
+% Zeineb - In this situation, several solutions have been proposed ... ("have" not "were")
 An usual approach is just disregard the fact that the fitness is
 noisy and using whatever value is returned a single time or after
-re-evaluation each generation. This was the option in our
+re-evaluation each generation. 
+% Zeineb - A usual approach is just to disregard the fact that the fitness is noisy and 
+%to use whatever value is returned a single time or after a re-evaluation of each generation.
+This was the option in our
 previous research in games and evolution of neural networks \cite{castilloGECCO99,bots:evostar,merelo:ESNN} and leads, if
 the population is large enough, to an {\em implicit averaging} as
 mentioned in \cite{Jin2005303}. In fact, evolutionary algorithm
@@ -169,7 +176,9 @@ necessarily for all distributions.
 To the best of our knowledge, 
 other measures like the median which might be more adequate for
 certain noise models have not been tested; the median always exists, while the average might not exist for non-centrally distributed variables. Besides, most models keep the number of evaluations is fixed
-and independent of its value, which might result in bad individuals
+and independent of its value, 
+% Zeineb - Besides, most models keep the number of evaluations   fixed and independent of its value, 
+which might result in bad individuals
 being evaluated many times before being discarded; some authors have
 proposed {\em resampling}, that is, re-evaluate the individuals a number of times to increase the precision in fitness
 \cite{RadaVilela2014}, 
@@ -565,10 +574,10 @@ any case, see the effect of doing it.
 This work has been supported in part by project ANYSELF
 (TIN2011-28627-C04-02 and -01).
 The authors would like to thank the FEDER of European Union for
-financial support via project "Sistema de InformaciÛn y PredicciÛn de
-bajo coste y autÛnomo para conocer el Estado de las Carreteras en
+financial support via project "Sistema de Informaci√≥n y Predicci√≥n de
+bajo coste y aut√≥nomo para conocer el Estado de las Carreteras en
 tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the
-"Programa Operativo FEDER de AndalucÌa 2007-2013". We also thank all
+"Programa Operativo FEDER de Andaluc√≠a 2007-2013". We also thank all
 Agency of Public Works of Andalusia Regional Government staff and
 researchers for their dedication and professionalism.
 
