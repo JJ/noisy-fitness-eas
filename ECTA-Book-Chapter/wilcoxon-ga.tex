@@ -85,14 +85,14 @@ fitness, the success rate, will also be noisy since different training
 schedules will result in slightly different success rates. 
 
 The examples mentioned above are included actually in one or the four categories
-% Paloma - [...] actually included in [...] || [...] in one (or in | of) the four [...]
+% [...] actually included in [...] || [...] in one (or in | of) the four [...]
 where uncertainties in fitness are found, fitness functions with intrinsic noise. These four types include also,
 % Antonio - ¿cómo se llama la categoría que has contado arriba?
 % olvidado y añadido - JJ 
 according to \cite{Jin2005303} approximated fitness functions
 (originated by, for instance, surrogate models); robust functions,
 where the main focus is in finding values with high tolerance to
-% Paloma - [...] where the main focus lies on [...]
+% [...] where the main focus lies on [...]
 change in initial evaluation conditions, and finally dynamic fitness
 functions, where the {\em inherent} value of the function changes with
 time. 
@@ -100,7 +100,7 @@ time.
 % Es que no cabe más. 
 Our main interest will be in the first type, since it is the one
 that we have actually met in the past and which has led to the development
-% Paloma - This line works fine without 'which' because it is already implied.
+% This line works fine without 'which' because it is already implied.
 of this work. 
 
 At any rate, in this paper we will not be dealing with actual
@@ -113,7 +113,7 @@ noise we will be interested in.
 % explicado algo - JJ
 
 The rest of the paper is organized as follows: next we describe the
-% Paloma - I would personally use 'structured as follows', but it is up to you. And probably after the colon you
+% I would personally use 'structured as follows', but it is up to you. And probably after the colon you
 % should start with 'in the next chapter/section [...]' just to clarify.
 state of the art in the treatment of noise in fitness functions. The
 method we propose in this paper, called Wilcoxon Tournament, will be
@@ -270,6 +270,7 @@ What we found was that, in all cases, Gamma is the distribution that
 better fits the data. That does not mean that the noise effectively
 follows this distribution, but that if it can be said to follow one,
 it's this one. In fact, just a few individuals have a good fit (to
+% better use "it is" than "it's"
 95\% accuracy using the Kolmogorov-Smirnov), and none of them in
 generation 50. The fit for an individual in the first generation that
 does follow that distribution (individual 8) is shown in Figure
@@ -293,6 +294,7 @@ approximation if $k$ > 10).
 Some interesting facts that can be deduced from these measures is that
 in general, fitness is skewed and has a high value. Besides, it
 follows a gamma distribution, which, if we wan to model noise
+% "if we want to model noise"
 accurately, should be the one used. However, we are rather interested
 in the overall shape of noise so since the skewness value of the gamma
 distribution is rather high we will use, in this paper, a Gaussian
