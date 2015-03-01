@@ -142,23 +142,30 @@ results shown in Section \ref{sec:res}; finally its implications are discussed i
 
 The most comprehensive review of the state of the art in evolutionary
 algorithms in {\em uncertain} environments 
-was done by Jin and Branke in 2005 \cite{Jin2005303}, although recent papers such as \cite{DBLP:journals/corr/QianYZ13} include a brief update of the state
+was done by Jin and Branke in 2005 \cite{Jin2005303}, although recent
+papers such as \cite{DBLP:journals/corr/QianYZ13} and \cite{Qian:sampling} include a brief update of the state
 of the art. In that first survey 
 of evolutionary optimization by Jin and Branke  in
-uncertain environments this uncertainty is categorized into noise,
+uncertain environments that uncertainty is categorized into noise,
 robustness, fitness approximation and time-varying fitness functions, and then,
 different options for dealing with it are proposed. In principle, the
 approach presented in this paper was designed to deal with the first kind of
 uncertainty, noise in fitness evaluation, although it could be argued
-that there is uncertainty in the true fitness as in the third
+that there is uncertainty in the true fitness as stated in the third
 category. In any case it could be applied to
-other types of noise. In this situation, several solutions have been
+other types of noise, since it depends more on the shape and intensity
+of noise than the origin. 
+
+In the same situation, a noisy fitness evaluation, several solutions have been
 proposed and explained in the survey \cite{Jin2005303}. These will be
 explained next.
 % Zeineb - In this situation, several solutions have been proposed
 % ... ("have" not "were")
 % fixed, thx - JJ
-A usual approach is just to disregard the fact that the fitness is
+For scientists not concerned on solving the problem of noise, but on
+a straightforward solution of the optimization problem without
+modification of existing tools and methodologies, a usual approach is
+just to disregard the fact that the fitness is 
 noisy and use whatever value is returned by a single evaluation or after
 re-evaluation each generation. 
 % Zeineb - A usual approach is just to disregard the fact that the fitness is noisy and 
@@ -166,10 +173,10 @@ re-evaluation each generation.
 %re-evaluation of each generation.
 % fixed, thx - JJ
 This was the option in our
-previous research in games and evolution of neural networks \cite{castilloGECCO99,bots:evostar,merelo:ESNN} and leads, if
+previous research in games and evolution of neural networks \cite{castilloGECCO99,bots:evostar,merelo:ESNN,DBLP:journals/jcst/MoraFGGF12,Liberatore_COSECIVI14} and leads, if
 the population is large enough, to an {\em implicit averaging} as
-mentioned in \cite{Jin2005303}. In fact, evolutionary algorithm
-selection is also stochastic, so noise in fitness evaluation
+mentioned in \cite{Jin2005303}. In fact, selection used in evolutionary algorithms
+is also stochastic, so noise in fitness evaluation
 will have the same effect as randomness in selection or a higher mutation
 rate, which might make the evolution process easier and not harder
 in some particular cases
@@ -177,10 +184,19 @@ in some particular cases
 In fact, Miller and Goldberg proved that an infinite population would not
 be affected by noise \cite{miller1996genetic} and Jun-Hua and Ming studied the
 effect of noise in convergence rates \cite{Junhua20136780}, proving
-that an elitist genetic algorithm finds at least one solution with a lowered
-convergence rate. But populations are finite, so the usual approach is to increase the population size to a value bigger than would be needed in a non-noisy environment. 
-This has also the advantage that no special provision or change to the
-implementation has to be made; but a different value of a single parameter.
+that an elitist genetic algorithm finds at least one solution, although with a lowered
+convergence rate. But real populations are finite, so the usual
+approach to dealing with fitness with a degree of randomness is to
+increase the population size to a value bigger than 
+would be needed in a non-noisy environment. In fact, it has been
+recently proved that using {\em sex}, that is, crossover, is able to
+deal successfully with noise \cite{2015arXiv150202793F}, while an
+evolutionary algorithm based on mutation (such as the $\mu$+1 EA)
+would suffer a considerable degradation of performance. 
+However, crossover is part of the standard kit of evolutionary
+algorithms, so using it and increasing the population size has the
+advantage that no special provision or change to the implementation
+has to be made, just different values of the standard parameters.
 
 Another more theoretically sound way is using a statistical central tendency
 indicator, which is usually the {\em average}. This strategy is called
