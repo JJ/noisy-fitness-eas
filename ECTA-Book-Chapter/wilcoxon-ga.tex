@@ -541,9 +541,12 @@ and replacement library. This also means that the replacement method
 is not exactly the same: while WPO replaces every generation 50\% of
 the individuals, the rest evaluate new individuals before replacement
 and eliminate the worst 512 (50\% of the original
-population). Replacement is, thus, less greedy in the WPO case, but
-we do not think this will be a big influence on result (although it
-might account for the bigger number of evaluations obtained in some
+population). 
+% Zeineb - the rest evaluates new individuals before replacement and eliminates the 
+Replacement is, thus, less greedy in the WPO case, but
+we do not think this will be a big influence on result 
+% Zeineb - but we do not think that this will have a big influence on the results
+(although it might account for the bigger number of evaluations obtained in some
 cases), besides, it just needed a small modification of code and was
 thus preferred for that reason. All values shown are the result of 30
 independent runs.
@@ -557,7 +560,9 @@ with the ETA and WPO methods yielding very similar values which are
 actually worse than the 0-memory method. However, the scenario on the
 right,
  which shows how the number of evaluations scales with the noise
-level, is somewhat different. While the 0-memory method still has the
+level, is somewhat different. 
+% is somehow different. 
+While the 0-memory method still has the
 smallest number of evaluations {\em for successful runs}, the success
 rate degrades very fast, with roughly the same and slightly less than
 100\% for $\sigma=2$ but falling down to 63\% for 0-memory and around
@@ -572,7 +577,7 @@ max fitness and evaluated ETA and WPO over another problem, MMDP with
 similar absolute $\sigma$, with the difference that, in this case,
 $\sigma=2$ would be 20\% of the max value, which is close to the one
 observed experimentally, as explained in the Section \ref{sec:noise}.
-
+% Zeienb - in  Section \ref{sec:noise}.
 \begin{figure}[h!tb]
 \centering
 \includegraphics[width=0.9\textwidth]{../images/evals-mmdp.png}
@@ -592,9 +597,12 @@ number of evaluations. It is statistically indistinguishable for
 $\sigma=2$, and different only at the 10\% level (p-value = 0.09668)
 for $\sigma=1$, however, if we take the time needed to reach solutions
 into account, ETA is much faster since it does not apply 10*1024
-statistical tests every generation. However, WPO is more robust, with
+statistical tests every generation. 
+% zeineb - statistical tests in every generation. 
+However, WPO is more robust, with
 a lower standard deviation, in general, at least for high noise
 levels. However, both methods obtain a good result with a much higher
+% Zeineb - both methods obtain  good results with a much higher
 success rate than the implicit fitness (0-memory) method. Besides, ETA and WPO 
 incorporate explicit fitness evaluation naturally into the population
 {\em resampling} only surviving individuals. This accounts for a
