@@ -721,32 +721,44 @@ Wilcoxon test to compare a sample of individuals and partial-order
 them within the population, 
  have been tested over two
 different fitness functions and compared with implicit average (or
-0-memory) methods, as well as among themselves. In general,
+0-memory) methods, as well as among themselves; we have also tried to
+limit the number of evaluations and generally checked its influence in
+results. In general,
 memory-based methods have much higher success rate than 0-memory
 methods and the difference increases with the noise level, with
 0-memory methods crashing at noise levels close to 20\% while ETA and
-WPO maintain a high success level.
+WPO maintain a high success level. Limiting the number of evaluations,
+in general, has an impact that is very lightly positive or
+negative. 
 
 It is difficult to choose between the two proposed methods, ETA and
 WPO. However, ETA is much faster since it avoids costly
-comparisons. It also has a slightly higher success rate, and the
+statistical analysis. In a profiling of the WPO method we have
+discovered that the vast majority of program time is spent computing
+the Wilcoxon test, so times are of a different order of magnitude. 
+It also has a slightly higher success rate, and the
 number of evaluations it needs to find the solution is only slightly
 worse; even if from the point of view of the evolutionary algorithm it
 is slightly less robust and slightly worse, it compensates the time
 needed to make more evaluations with the fact that it does not need to
-perform statistical tests to select new individuals.
+perform statistical tests to select new individuals. So, in general,
+using a central and fast statistic such as the average will be
+preferred, either from the time or number of evaluations point of
+view, to using the Wilcoxon test. 
 
 However, this research is in its initial stages. 
 % Zeineb - However, this research is in its initial stages. 
 The fact that we are
-using a centrally distributed noise gives ETA an advantage since, in
+using a centrally distributed noise apparently gives ETA an advantage since, in
 fact, comparing the mean of two individuals will be essentially the
 same as doing a statistical comparison, since when the number of
 measures is enough, statistical significance will be reached. In fact,
 with a small difference ETA might select as better an individual whose
 fitness is actually the same, something that would be correctly
 spotted by WPO, but, in fact, since there is an average selective
-pressure this is not going to matter in the long run. 
+pressure this is not going to matter in the long run. Using higher
+selective pressures might make a difference, but this is something
+that will have to be tested. 
 
 It might matter in different situations, for instance in numerical
 optimization problems and also when noise follows an uniform
@@ -756,16 +768,15 @@ research, and destined to find out in which situations WPO is better
 than ETA and the other way round. 
 
 Besides exploring noise in different problems and modelling its
-distribution, we will explore different parameters. The first one is the number of comparisons in WPO. Initial
+distribution, we will explore different parameters in the model. The first one is the number of comparisons in WPO. Initial
 explorations have proved that changing it from 5 to 32 does not yield
 a significant difference. Looking for a way to speed up this method
-would also be important since it would make its performance closer to
-ETA. Memory size could also be explored. Right now evaluations are
-always performed, but in fact after a number of evaluations are done
-comparisons will be statistically significant; it is difficult to
-know, however, which is this number, but in long runs it would be
-interesting to cap fitness memory size to a sensible number, or, in
-any case, see the effect of doing it. 
+would also be important since it would make its speed closer to
+ETA. It might be an improvement to use Wilcoxon at the selection
+stage, not as we do know at the fitness computaton stage. All these
+research questions open new research avenues that will be explored in
+the future, along with testing with fuzzy selection techniques and
+using clustering for selecting tournament sets. 
 
 
 \section*{Acknowledgments} %CARLOS: makes unnumbered section and adds project reference.
