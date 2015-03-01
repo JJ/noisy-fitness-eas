@@ -143,7 +143,7 @@ results shown in Section \ref{sec:res}; finally its implications are discussed i
 The most comprehensive review of the state of the art in evolutionary
 algorithms in {\em uncertain} environments 
 was done by Jin and Branke in 2005 \cite{Jin2005303}, although recent
-papers such as \cite{DBLP:journals/corr/QianYZ13} and \cite{Qian:sampling} include a brief update of the state
+papers such as \cite{DBLP:journals/corr/QianYZ13,6931307} and \cite{Qian:sampling} include a brief update of the state
 of the art. In that first survey 
 of evolutionary optimization by Jin and Branke  in
 uncertain environments that uncertainty is categorized into noise,
@@ -208,8 +208,10 @@ sample size used for averaging \cite{aizawa1994scheduling}. Most
 authors use several measures of fitness for each new individual
 \cite{costa2013using}, although other averaging strategies have also
 been proposed, like averaging over the neighbourhood of the
-individual or using resampling, that is, more measures of fitness in a
-number which is decided heuristically \cite{liu2014mathematically}. This assumes that there is, effectively, an average of the
+individual or using {\em resampling}, that is, more measures of fitness in a
+number which is decided heuristically
+\cite{liu2014mathematically}. This assumes that there is, effectively,
+an average of the 
 fitness values which is true for Gaussian random noise and other
 distributions such as Gamma or Cauchy but not
 necessarily for all distributions. 
@@ -225,7 +227,7 @@ and independent of its value,
 which might result in bad individuals
 being evaluated many times before being discarded; some authors have
 proposed {\em resampling}, that is, re-evaluate the individuals a number of times to increase the precision in fitness
-\cite{RadaVilela2014}, 
+\cite{RadaVilela2014,6900521}, 
 which will effectively increase the number of
 evaluations and thus slow down the search. In any case, using average is
 also a small change to the overall algorithm framework, requiring only
@@ -235,25 +237,30 @@ paper.
 
 These two approaches that are focused on the evaluation process might
 be complemented with changes to the selection process. For instance,
-using a threshold \cite{Rudolph2001318} that is related to the noise characteristics to
+using a threshold \cite{Rudolph2001318,6900521} that is related to the noise characteristics to
 avoid making comparisons of individuals that might, in fact, be very
 similar or statistically the same; this is usually called {\em
   threshold selection} and can be applied either to explicit or
 implicit averaging fitness functions. The algorithms used for
 solution, themselves, can be also tested, with some authors proposing, instead of taking more measures, 
 testing different solvers \cite{cauwet2014algorithm}, some of which
-might be more affected by noise than others. 
+might be more affected by noise than others. However, recent papers
+have proved that sampling might be ineffective \cite{Qian:sampling} in
+some types of evolutionary algorithms, adding running time without an
+additional benefit in terms of performance. This is one lead we will
+use in the current paper. 
 
 Any of these approaches do have the problem of statistical
 representation of the {\em true} fitness, even more so if there is not
-such a thing, but several measures that represent, {\em all of them}
+such a thing, but several measures that represent, {\em as a set}
 the fitness of an individual. This is what we are going to use in this
 paper, where we present a method that uses resampling via an
 individual memory and use either explicit averaging or statistical
 tests like the non-parametric Wilcoxon test. 
 First we will examine and try to find the shape of the noise that
 actually appears in games; then we will check in this paper what is the influence on the quality of
-results of these two strategies and which one, if any, is the best when working in noisy environments. 
+results of these two strategies and which one, if any, is the best
+when working in noisy environments.  
 
 %--------------------------------------------------------------------------
 
