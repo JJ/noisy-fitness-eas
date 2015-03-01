@@ -380,6 +380,7 @@ shown  in Sections \ref{sec:res} and \ref{sec:wilcoxon}.
 
 As indicated in the previous section, 
 % Zeineb - As indicated in the previous section, 
+% OK
 most explicit averaging methods
 use several measures to compute fitness as an average, with
 resampling, that is, additional measures, in case 
@@ -492,7 +493,13 @@ We chose to use just these two functions
 % OK - JJ
 because they have different fitness landscapes, are usually difficult
 for an evolutionary algorithm and have been extensively used for
-testing other kind of operators and algorithms.
+testing other kind of operators and algorithms. In Subsection
+\ref{ss:unlimited} we will show results with no limitations on the
+number of evaluations; then we will show results limiting the number
+of evaluations in Subsection \ref{ss:lted}
+
+\subsection{Noisy fitness, unlimited evaluations}
+\label{ss:unlimited}
 
 Several methods were tested: a baseline algorithm without
 noise to establish the time and number of evaluations
@@ -505,7 +512,9 @@ mutation and 80\% crossover, $p=1024$ and stopping when the best was
 found or number of evaluations reached. This was 200K for the Trap,
 which used 40 as chromosome size, and 1M for MMDP, which used 60 as
 chromosome size; these parameters are shown in Table \ref{fig:ga_params}. We have also used an additive Gaussian noise centered in zero
-and different $\sigma$, which is independent of the range of variation of the fitness values. By default, noise will follow a normal distribution with center in 0 and $\sigma=1$.
+and different $\sigma$, which is independent of the range of variation
+of the fitness values. By default, noise will follow a normal
+distribution with center in 0 and $\sigma=1,2$. 
 
 \begin{table*}[!t]%CARLOS: places table at the top of the page.
 \begin{center}
@@ -529,9 +538,9 @@ Stopping criterion & Non-noisy best found or maximum number of  evaluations reac
 \end{tabular}
 \end{center}
 \end{table*}
-
-
-
+%
+%
+%
 \begin{figure}[!t] %CARLOS: place figure at top of page
 \centering
 \subfloat[Memory size]{
@@ -550,11 +559,12 @@ Stopping criterion & Non-noisy best found or maximum number of  evaluations reac
 %
 All tests use the {\tt Algorithm::Evolutionary} library, and the scripts
 are published, as above, in the GitHub repository, together with raw
-and processed results. The evolutionary algorithm code used in all
-cases is exactly the same except for WPO, which, since it needs the
+results using the serialization language YAML
+and processed results as R scripts and {\tt .csv} files. The evolutionary algorithm code used in all
+cases is exactly the same except for WPO, which, since it uses the
 whole population to evaluate fitness, needed a special reproduction
 and replacement library. This also means that the replacement method
-is not exactly the same: while WPO replaces every generation 50\% of
+is not exactly the same: while WPO every generation replaces  50\% of
 the individuals, the rest evaluateS new individuals before replacement
 and eliminateS the worst 512 (50\% of the original
 population). 
@@ -633,6 +643,49 @@ per generation is exactly the population size, which is important for
 optimization processes with a limited budget. 
 
 %--------------------------------------------------------------------------
+% This new section for the book chapter
+\subsection{MMDP with limited evaluations}
+\label{ss:lted}
+
+As indicated in the state of the art, {\em resampling} that is,
+performing new evaluations, is only necessary in the case statistical
+significance is not met. If two individuals are different enough, the
+comparison will be significant even if they have only one
+measure. That is why some authors \cite{Qian:sampling} prove that
+resampling is not needed. However, as indicated above, an increasing
+number of evaluations will be needed as generations proceed, since, as
+shown in the noise study in Section \ref{sec:noise}, $\sigma$
+increases with time and it becomes increasingly difficult to make
+apart different inherent values of the fitness. That is why in this
+work we have performed resampling every generation, however, it is
+quite clear that this resampling should not proceed unchecked beyond
+what is statistically reasonable, that is why we have performed
+experiments limiting the maximum number of evaluations to 30 and
+evaluated its impact in performance. We repeated the experiments
+adding lines of code that skip making a new evaluation if the vector
+of fitness measures has reached 30. Code is, as usual, available in
+the repository
+\url{https://github.com/JJ/algorithm-evolutionary-examples}. Experiment
+results and log are under the directory {\tt ECTA-book}. Results are
+shown in Figures \ref{fig:lted:ns1} and \ref{fig:lted:ns2}. 
+
+\begin{figure}[!ht] 
+\centering
+\includegraphics[width=0.9\textwidth]{../images/ns1-MMDP.png}
+\caption{Number of evaluations for successful runs ETA and WPO, with
+  and without limitation of evaluations needed for solving the MMDP
+  problem with 10 blocks and $\sigma=1$. Please note that $y$ axis is
+  algorithmc, for clarity. \label{fig:lted:ns1}}
+\end{figure}
+%
+\begin{figure}[!ht] 
+\centering
+\includegraphics[width=0.9\textwidth]{../images/ns2-MMDP.png}
+\caption{Number of evaluations for successful runs ETA and WPO, with
+  and without limitation of evaluations needed for solving the MMDP
+  problem with 10 blocks and $\sigma=2$. Please note that, for the
+  sake of clarity, the $y$ axis is logarithmic.\label{fig:lted:ns2}}
+\end{figure}
 
 \section{Conclusions}
 
@@ -688,6 +741,7 @@ comparisons will be statistically significant; it is difficult to
 know, however, which is this number, but in long runs it would be
 interesting to cap fitness memory size to a sensible number, or, in
 any case, see the effect of doing it. 
+
 
 \section*{Acknowledgments} %CARLOS: makes unnumbered section and adds project reference.
 
