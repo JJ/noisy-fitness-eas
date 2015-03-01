@@ -195,7 +195,9 @@ would be needed in a non-noisy environment. In fact, it has been
 recently proved that using {\em sex}, that is, crossover, is able to
 deal successfully with noise \cite{2015arXiv150202793F}, while an
 evolutionary algorithm based on mutation
-%CARLOS: un algorithm mu+1 puede usar cruce - elimino esto  (such as the $\mu$+1 EA)
+%CARLOS: un algorithm mu+1 puede usar cruce - elimino esto  (such as
+%the $\mu$+1 EA)
+% but that's the one mentioned in the paper - JJ
 would suffer a considerable degradation of performance. 
 % Zeineb - (such as the $\mu$+1 EA) would suffer from a considerable degradation in terms of performance.
 However, crossover is part of the standard kit of evolutionary
@@ -350,7 +352,9 @@ considered a good
 approximation if $k>10$). However, it is interesting to note the
 % Zeineb ($k >$ 10) the > character was not displayed for me, butit's ok in your generated .pdf 
 % then no need to take this comment into consideration
-%CARLOS: punt mathematical symbols inside the math env to avoid encoding problems.
+%CARLOS: punt mathematical symbols inside the math env to avoid
+%encoding problems.
+% thx - JJ
 skewness inherent in the distribution as a feature of noise, at least
 in this particular game. 
 
@@ -365,16 +369,16 @@ in the overall shape of noise so since the skewness parameter of the gamma
 distribution is rather high we will use, in this paper, a Gaussian
 noise to simulate it; Gaussian is a good approximation of Gamma for
 high values of the skewness parameter. This will be used in the experiments shown
-below. 
+shown  in Sections \ref{sec:res} and \ref{sec:wilcoxon}.
 % Zeineb - This will be used in the experiments discussed in Section \ref{sec:res}.
 % Zeineb - by "below" you mean in Section \ref{sec:res}? or both Section \ref{sec:res} and Section \ref{sec:wilcoxon} ?
 % Zeineb - beacuse experiments are in Section \ref{sec:res} ...
-
+% Both- fixed - JJ
 
 \section{Fitness memory and statistical significant differences}
 \label{sec:wilcoxon}
 
-As indicated in previous section, 
+As indicated in the previous section, 
 % Zeineb - As indicated in the previous section, 
 most explicit averaging methods
 use several measures to compute fitness as an average, with
@@ -393,16 +397,20 @@ measures to compute average fitness, which means that averages will be
 a more precise representation of actual value. 
 As evolution proceeds,
 the best individuals will, effectively, have an underlying non-noisy
-best value. We will call this method {\em extended temporal average}
+best value. We will call this method {\em Extended Temporal Average}
 or {\sf ETA}. 
-% Zeineb - We will call this method {\em Extended Temporal Average} or {\sf ETA}. 
+% Zeineb - We will call this method {\em Extended Temporal Average} or
+% {\sf ETA}. 
+% OK - JJ
 However, since average is a single value, selection methods might, in
-fact, select as the best individuals some that are not if the comparison
+fact, pick as the best individuals some that are not if the comparison
 is not statistically significant; this will happen mainly in the first
-and middle stages of search, which might effectively eliminate from
+and middle stages of search, which might effectively eliminate them from
 the pool 
 %  Zeineb - which might be effectively eliminated from the pool 
-% Zeineb - (not sure if I have understoof the meaning) Check it if it's correct or not, please.
+% Zeineb - (not sure if I have understoof the meaning) Check it if
+% it's correct or not, please.
+% almost. It was not correct, I have fixed it - JJ
 or not adequately represent individuals that constitute, in
 fact, good solutions. That is why we introduce an additional feature:
 using Wilcoxon test \cite{wilcoxon:1945}
@@ -422,8 +430,10 @@ that all its couples will have a fitness of 20; one whose comparisons
 are never significant according to the Wilcoxon test will score
 exactly 10, the same as if it wins as many times as it loses, and the
 one that always loses will score 0. We will call this method
-Wilcoxon-test based partial order, or {\sf WPO} for short.
-% Zeineb - We will call this method Wilcoxon-test based on Partial Order, or {\sf WPO} for short.
+Partial order Wilcoxon-test, or {\sf WPO} for short.
+% Zeineb - We will call this method Wilcoxon-test based on Partial
+% Order, or {\sf WPO} for short.
+% It's the other way round, but now it does not fit, well, - JJ
 \begin{figure}[!t] %CARLOS: place figure at top of page
 \centering
 \subfloat[Memory size]{
@@ -451,15 +461,17 @@ the implicit average method that uses a single evaluation per
 individual, although they needed more time and memory. Since it does not need to perform averages or make
 additional fitness measures every generation, it is twice as fast as
 the next method, the one that uses explicit average fitness. An
-exploration of memory sizes\footnote{\url{http://jj.github.io/Algorithm-Evolutionary/graphs/memory/} } %(published in
-% Zeineb - (published at
+exploration of memory sizes\footnote{Published at \url{http://jj.github.io/Algorithm-Evolutionary/graphs/memory/} } %(published in
+% Zeineb - (
+% OK
 (shown in Figure \ref{fig:initial} for a
 typical run) showed that they are distributed unevenly but, in general, there is no single memory size
 overcoming all the population. Besides, distribution of fitness\footnote{\url{http://jj.github.io/Algorithm-Evolutionary/graphs/fitness-histo/}} shows a
 distribution with most values concentrated along the middle (that is,
-fitness equal to 10 or individuals that cannot be compared with any
+fitness equal to 10) or individuals that cannot be compared with any
 other,
 % % Zeineb - fitness equals to 10 or individuals
+% left it like before - JJ
  together with a few with the highest fitness and many with the
 lowest fitness. Besides showing that using the partial order for individual selection 
 is a valid strategy, it also shows that a too greedy selection method would
@@ -543,13 +555,17 @@ cases is exactly the same except for WPO, which, since it needs the
 whole population to evaluate fitness, needed a special reproduction
 and replacement library. This also means that the replacement method
 is not exactly the same: while WPO replaces every generation 50\% of
-the individuals, the rest evaluate new individuals before replacement
-and eliminate the worst 512 (50\% of the original
+the individuals, the rest evaluateS new individuals before replacement
+and eliminateS the worst 512 (50\% of the original
 population). 
-% Zeineb - the rest evaluates new individuals before replacement and eliminates the 
+% Zeineb - the rest evaluates new individuals before replacement and
+% eliminates the 
+% Ok - JJ
 Replacement is, thus, less greedy in the WPO case, but
-we do not think this will be a big influence on result 
-% Zeineb - but we do not think that this will have a big influence on the results
+we do not think that this will have a big influence on the results
+% Zeineb - but we do not think that this will have a big influence on
+% the results
+% OK - JJ
 (although it might account for the bigger number of evaluations obtained in some
 cases), besides, it just needed a small modification of code and was
 thus preferred for that reason. All values shown are the result of 30
@@ -603,10 +619,12 @@ for $\sigma=1$, however, if we take the time needed to reach solutions
 into account, ETA is much faster since it does not apply 10*1024
 statistical tests every generation. 
 % zeineb - statistical tests in every generation. 
+% sure? - JJ
 However, WPO is more robust, with
 a lower standard deviation, in general, at least for high noise
-levels. However, both methods obtain a good result with a much higher
+levels. However, both methods obtain good results with a much higher
 % Zeineb - both methods obtain  good results with a much higher
+% OK - JJ
 success rate than the implicit fitness (0-memory) method. Besides, ETA and WPO 
 incorporate explicit fitness evaluation naturally into the population
 {\em resampling} only surviving individuals. This accounts for a
@@ -640,7 +658,7 @@ is slightly less robust and slightly worse, it compensates the time
 needed to make more evaluations with the fact that it does not need to
 perform statistical tests to select new individuals.
 
-However, this research is in initial stages. 
+However, this research is in its initial stages. 
 % Zeineb - However, this research is in its initial stages. 
 The fact that we are
 using a centrally distributed noise gives ETA an advantage since, in
