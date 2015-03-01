@@ -650,34 +650,45 @@ optimization processes with a limited budget.
 \subsection{MMDP with limited evaluations}
 \label{ss:lted}
 
-As indicated in the state of the art, {\em resampling} that is,
-% Paloma - not clear, you may want to include "that is, performing new evaluations" in parentheses
+As indicated in the state of the art {\em resampling}, that is,
+% Paloma - not clear, you may want to include "that is, performing new
+% evaluations" in parentheses
+% changing comma - JJ
 performing new evaluations, is only necessary in the case statistical
 significance is not met. If two individuals are different enough, the
 comparison will be significant even if they have only one
-measure. 
+fitness value. 
 % Paloma -  not clear... "even performing only one measure" ?
+% fitness value - JJ
 That is why some authors \cite{Qian:sampling} have proved that
-resampling is not needed. However, as indicated above, an increasing
-number of evaluations will be needed as generations proceed, since, as
-shown in the noise study in Section \ref{sec:noise}, $\sigma$
-increases with time and it becomes increasingly difficult to take
-apart different inherent values of the fitness. 
+resampling is not needed.
+% However, as indicated above, an increasing
+%number of evaluations will be needed as generations proceed, since, as
+%shown in the noise study in Section \ref{sec:noise}, $\sigma$
+%increases with time and it becomes increasingly difficult to take
+%apart different inherent values of the fitness. 
 % Paloma - two sentences would do better:
-% "However, as indicated above, an increasing number of evaluations will be needed as generations proceed.
-% This is due to the fact that, as shown in the noise study in Section \ref{sec:noise}, $\sigma$ increases with time and it becomes increasingly difficult to take apart different inherent values of the fitness."
-That is why in this
-work we have performed resampling every generation, however, it is
+However, as indicated above, an increasing number of evaluations will be needed as generations proceed.
+ This is due to the fact that, as shown in the noise study in Section
+ \ref{sec:noise}, $\sigma$ increases with time and it becomes
+ increasingly difficult to take apart different inherent values of the
+ fitness.
+That is the main reason that has led us to performed resampling every
+generation in this work. However, it is
 % Paloma - too much "That is why", try with "For this reason", or traditionally Hence, then, thus...
-% Also, "we have performed resampling on every generation." (Dot, and then "However, it is...")
+% Also, "we have performed resampling on every generation." (Dot, and
+% then "However, it is...")
+% done - JJ
 quite clear that this resampling should not proceed unchecked beyond
-what is statistically reasonable, that is why we have performed
+what is statistically reasonable, hence we have performed
 % Paloma - Another "that is why"
+% changed
 experiments limiting the maximum number of evaluations to 30, and
 evaluated its impact in performance. We have repeated the experiments
 adding lines of code that skip making a new evaluation if the vector
-of fitness measures has reached 30.
+of fitness measures has reached length 30.
 % Paloma - "has already reached the 30".
+% added length - JJ
 Code is, as usual, available in
 the repository
 \url{https://github.com/JJ/algorithm-evolutionary-examples}. Experiment
@@ -707,8 +718,9 @@ Please note that the unlabelled boxplots in Figures
 have the same values as the ones shown in figure
 \ref{fig:mmdp:evals}. In fact, we should look at the columns labelled
 {\em lted}, for {\em limited}. First, the number of evaluations in
-\ref{fig:lted:ns1} does not change significantly.
+\ref{fig:lted:ns1} does not significantly change.
 % Paloma - Adverbs before verbs. "does not significantly change".
+% please change that directly, no problem - JJ
  It is essentially
 the same for ETA and slightly less for WPO (median 68610 for unlimited
 evaluations, 66550 for limited) but the difference is not significant;
@@ -722,8 +734,9 @@ It should be noted that the average number of evaluations {\em
   increases} even if the number of evaluations per individual {\em
   decreases}. This means that, in some cases, this limitation makes
 {\em worse} individuals pass to the next generation, decreasing the
-quality of search, 
+quality of evolutionary search, 
 % Paloma - not clear. "the search" ?
+% evolutionary - JJ
 and making it slower. In general, our conclusion
 here is that the number of evaluations in WPO should be kept unlimited
 or, at least, limited to a high value. It might increase slightly the
