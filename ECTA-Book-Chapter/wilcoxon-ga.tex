@@ -390,12 +390,16 @@ As evolution proceeds,
 the best individuals will, effectively, have an underlying non-noisy
 best value. We will call this method {\em extended temporal average}
 or {\sf ETA}. 
-
+% Zeineb - We will call this method {\em Extended Temporal Average} or {\sf ETA}. 
 However, since average is a single value, selection methods might, in
 fact, select as the best individuals some that are not if the comparison
 is not statistically significant; this will happen mainly in the first
 and middle stages of search, which might effectively eliminate from
-the pool or not adequately represent individuals that constitute, in
+the pool 
+%  Zeineb - which might be effectively eliminated from the pool 
+% Zeineb - (not sure if I have understoof the meaning) Check it if it's correct or not, please.
+
+or not adequately represent individuals that constitute, in
 fact, good solutions. That is why we introduce an additional feature:
 using Wilcoxon test \cite{wilcoxon:1945}
 for comparing not the average, but all
@@ -415,7 +419,7 @@ are never significant according to the Wilcoxon test will score
 exactly 10, the same as if it wins as many times as it loses, and the
 one that always loses will score 0. We will call this method
 Wilcoxon-test based partial order, or {\sf WPO} for short.
-%
+% Zeineb - We will call this method Wilcoxon-test based on Partial Order, or {\sf WPO} for short.
 \begin{figure}[ht!b]
 \centering
 \subfloat[Memory size]{
@@ -443,13 +447,16 @@ individual, although they needed more time and memory. Since it does not need to
 additional fitness measures every generation, it is twice as fast as
 the next method, the one that uses explicit average fitness. An
 exploration of memory sizes (published in
+% Zeineb - (published at
   \url{http://jj.github.io/Algorithm-Evolutionary/graphs/memory/} and shown in Figure \ref{fig:initial} for a
 typical run) showed that they are distributed unevenly but, in general, there is no single memory size
 overcoming all the population. Besides, distribution of fitness, published at
   \url{http://jj.github.io/Algorithm-Evolutionary/graphs/fitness-histo/} shows a
 distribution with most values concentrated along the middle (that is,
 fitness equal to 10 or individuals that cannot be compared with any
-other, together with a few with the highest fitness and many with the
+other,
+% % Zeineb - fitness equals to 10 or individuals
+ together with a few with the highest fitness and many with the
 lowest fitness. Besides showing that using the partial order for individual selection 
 is a valid strategy, it also shows that a too greedy selection method would
 eliminate many individuals that might, in fact, have a high fitness. This
