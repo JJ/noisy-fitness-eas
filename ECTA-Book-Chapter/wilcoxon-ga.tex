@@ -87,23 +87,24 @@ using evolutionary algorithms the measure that is usually taken as
 fitness, the success rate, will also be noisy since different training
 schedules will result in slightly different success rates. 
 
-The examples mentioned above are included actually in one or the four categories
-% Paloma - [...] actually included in [...] || [...] in one (or in | of) the four [...]
+The examples mentioned above are actually included in one of the four categories
+% Paloma - [...] actually included in [...] || [...] in one (or in |
+% of) the four [...]
+% fixed, thanks - JJ
 where uncertainties in fitness are found, fitness functions with intrinsic noise. These four types include also,
-% Antonio - ¿cómo se llama la categoría que has contado arriba?
-% olvidado y añadido - JJ 
 according to \cite{Jin2005303} approximated fitness functions
 (originated by, for instance, surrogate models); robust functions,
-where the main focus is in finding values with high tolerance to
+where the main focus lies on finding values with high tolerance to
 % [...] where the main focus lies on [...]
+% fixed, thx - JJ
 change in initial evaluation conditions, and finally dynamic fitness
 functions, where the {\em inherent} value of the function changes with
 time. 
-% Antonio - yo desarrollaría un poco más los diferentes tipos y en qué tipo de problemas se encuentran, por ejemplo, ya que la intro queda un poco escueta
-% Es que no cabe más. 
 Our main interest will be in the first type, since it is the one
-that we have actually met in the past and which has led to the development
-% Paloma - This line works fine without 'which' because it is already implied.
+that we have actually met in the past and has led to the development
+% Paloma - This line works fine without 'which' because it is already
+% implied.
+% out - JJ
 of this work. 
 
 At any rate, in this paper we will not be dealing with actual
@@ -112,12 +113,11 @@ that we actually have found in problems so far. In fact, from the
 point of view of dealing with fitness, these are the main features of
 noise we will be interested in. 
 
-% Antonio - explicar qué se hará en el artículo para simular estos fitness, el Wilcoxon tournament, o al menos describir los experimentos
-% explicado algo - JJ
-
-The rest of the paper is organized as follows: next we describe the
+The rest of the paper is structured as follows: in the next section we describe the
 % Paloma - I would personally use 'structured as follows', but it is up to you. And probably after the colon you
-% should start with 'in the next chapter/section [...]' just to clarify.
+% should start with 'in the next chapter/section [...]' just to
+% clarify.
+% done - JJ
 state of the art in the treatment of noise in fitness functions. The
 method we propose in this paper, called Wilcoxon Tournament, will be
 shown in Section \ref{sec:wilcoxon}; experiments are described and
@@ -280,8 +280,9 @@ the Akaike Information Criterion and the Kolmogorov-Smirnov statistic.
 What we found was that, in all cases, Gamma is the distribution that
 better fits the data. That does not mean that the noise effectively
 follows this distribution, but that if it can be said to follow one,
-it's this one. In fact, just a few individuals have a good fit (to
+it is this one. In fact, just a few individuals have a good fit (to
 % Paloma - better use "it is" than "it's"
+% done, but you can change this if you want by yourself - JJ
 95\% accuracy using the Kolmogorov-Smirnov), and none of them in
 generation 50. The fit for an individual in the first generation that
 does follow that distribution (individual 8) is shown in Figure
@@ -304,8 +305,9 @@ approximation if $k$ > 10).
 
 Some interesting facts that can be deduced from these measures is that
 in general, fitness is skewed and has a high value. Besides, it
-follows a gamma distribution, which, if we wan to model noise
+follows a gamma distribution, which, if we want to model noise
 % Paloma - "if we want to model noise"
+% argh, thx - JJ
 accurately, should be the one used. However, we are rather interested
 in the overall shape of noise so since the skewness value of the gamma
 distribution is rather high we will use, in this paper, a Gaussian
@@ -319,8 +321,6 @@ below.
 As indicated in previous section, most explicit averaging methods
 use several measures to compute fitness as an average, with
 resampling, that is, additional measures, in case 
-% Antonio - that comparisons?
-% Paloma - do not agree
 comparisons are not
 statistically significant. In this paper we will introduce a fitness
 {\em memory}, which amounts 
@@ -352,9 +352,11 @@ might be different (one better than the other) or not. There are many
 possible ways of introducing this partial order in the evolutionary
 algorithm; however, what we have done is to pair individuals a certain
 number of times (10, by default) and have every individual score a
-point every time it is better than the other in the couple; it will
-get a point less if it is the worse one. An individual that is better
-% Paloma - "it will be deducted by one point" sounds better than "it will get a point less", which sounds like '+= -1'
+point every time it is better than the other in the couple; its score
+will be decreased by one if it is the worse one. An individual that is better
+% Paloma - "it will be deducted by one point" sounds better than "it
+% will get a point less", which sounds like '+= -1'
+% changed - JJ
 that all its couples will have a fitness of 20; one whose comparisons
 are never significant according to the Wilcoxon test will score
 exactly 10, the same as if it wins as many times as it loses, and the
@@ -372,8 +374,9 @@ Wilcoxon-test based partial order, or {\sf WPO} for short.
 }
 \caption{(Left) 3D plot of the distribution of memory sizes for a single
 execution of the Wilcoxon-test based partial order. (Right)
-3d plot of the distribution of fitness values along time for the WPO
+3D plot of the distribution of fitness values along time for the WPO
 % Paloma - Capital d on 3D
+% OK - JJ
 method on the Trap function. \label{fig:initial}}
 \end{figure}
 
@@ -431,8 +434,9 @@ Stopping criterion & Non-noisy best found or max evaluations reached \\
 
 ETA and WPO have been tested using two well-known benchmarks, the deceptive bimodal Trap \cite{deb1992analyzing}
 function and the Massively Multimodal Deceptive Problem \cite{goldberg92massive} (MMDP). 
-We chose to use just these two functions were chosen
+We chose to use just these two functions 
 % Paloma - 'were chosen' is redundant.
+% OK - JJ
 because they have different fitness landscapes, are usually difficult
 for an evolutionary algorithm and have been extensively used for
 testing other kind of operators and algorithms.
