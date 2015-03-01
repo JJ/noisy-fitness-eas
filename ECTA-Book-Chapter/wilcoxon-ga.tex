@@ -68,8 +68,10 @@ strategies, we have frequently found that the fitness of a bot is {\em
   noisy}, in the sense that repeated evaluations will yield different
 values \cite{DBLP:journals/jcst/MoraFGGF12} which is a problem since
 fitness is the measure used to select individuals for reproduction. If
-we look at in in a more general setting, 
-% Zeineb - If we look at it in a more general setting, ... ("it" not "in")
+we look at it in a more general setting, 
+% Zeineb - If we look at it in a more general setting, ... ("it" not
+% "in")
+% Corrected, thx, - JJ
 noise in the fitness of individuals in the context of an evolutionary algorithm has different origins. It can be inherent to the
 individual that is evaluated; for instance, in 
 \cite{DBLP:journals/jcst/MoraFGGF12} a game-playing bot (autonomous agent) that includes a set of application rates is optimized. This results in different
@@ -138,15 +140,19 @@ approach presented in this paper was designed to deal with the first kind of
 uncertainty, noise in fitness evaluation, although it could be argued
 that there is uncertainty in the true fitness as in the third
 category. In any case it could be applied to
-other types of noise. In this situation, several solutions were been
+other types of noise. In this situation, several solutions have been
 proposed and explained in the survey \cite{Jin2005303}. These will be
 explained next.
-% Zeineb - In this situation, several solutions have been proposed ... ("have" not "were")
-An usual approach is just disregard the fact that the fitness is
-noisy and using whatever value is returned a single time or after
+% Zeineb - In this situation, several solutions have been proposed
+% ... ("have" not "were")
+% fixed, thx - JJ
+A usual approach is just to disregard the fact that the fitness is
+noisy and use whatever value is returned by a single evaluation or after
 re-evaluation each generation. 
 % Zeineb - A usual approach is just to disregard the fact that the fitness is noisy and 
-%to use whatever value is returned a single time or after a re-evaluation of each generation.
+%to use whatever value is returned a single time or after a
+%re-evaluation of each generation.
+% fixed, thx - JJ
 This was the option in our
 previous research in games and evolution of neural networks \cite{castilloGECCO99,bots:evostar,merelo:ESNN} and leads, if
 the population is large enough, to an {\em implicit averaging} as
@@ -181,9 +187,13 @@ distributions such as Gamma or Cauchy but not
 necessarily for all distributions. 
 To the best of our knowledge, 
 other measures like the median which might be more adequate for
-certain noise models have not been tested; the median always exists, while the average might not exist for non-centrally distributed variables. Besides, most models keep the number of evaluations is fixed
+certain noise models have not been tested; the median always exists,
+while the average might not exist for non-centrally distributed
+variables. Besides, most models keep the number of evaluations fixed 
 and independent of its value, 
-% Zeineb - Besides, most models keep the number of evaluations   fixed and independent of its value, 
+% Zeineb - Besides, most models keep the number of evaluations   fixed
+% and independent of its value, 
+% fixed, thx- JJ
 which might result in bad individuals
 being evaluated many times before being discarded; some authors have
 proposed {\em resampling}, that is, re-evaluate the individuals a number of times to increase the precision in fitness
