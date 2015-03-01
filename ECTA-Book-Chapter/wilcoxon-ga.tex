@@ -113,6 +113,18 @@ that we actually have found in problems so far. In fact, from the
 point of view of dealing with fitness, these are the main features of
 noise we will be interested in. 
 
+This paper is an extension of \cite{merelo14:noisy}. The main problem
+found in those set of experiments was the amount of evaluations needed
+to find a solution to the problem; while an individual was in the
+population, it was re-evaluated (re-sampled). However, statistically a
+limited amount of evaluations is usually enough to make meaningful,
+and statistically significant, comparisons. That is why in this paper
+we have done two kind of improvements: improve speed, because
+implementation always matters
+\cite{https://github.com/JJ/noisy-fitness-eas/tree/master/ECTA-Book-Chapter},
+and limit the amount of evaluations while checking if the results
+achieved (mainly success rate) remain the same.  
+
 The rest of the paper is structured as follows: in the next section we describe the
 % Paloma - I would personally use 'structured as follows', but it is up to you. And probably after the colon you
 % should start with 'in the next chapter/section [...]' just to
@@ -515,7 +527,7 @@ observed experimentally, as explained in the Section \ref{sec:noise}.
 \centering
 \includegraphics[width=0.9\textwidth]{../images/evals-mmdp.png}
 \caption{Number of evaluations for successful runs ETA and WPO needed for solving the MMDP
-  problem with 6 blocks and different noise levels, $\sigma=1,2$. \label{fig:mmdp:evals}}
+  problem with 10 blocks and different noise levels, $\sigma=1,2$. \label{fig:mmdp:evals}}
 \end{figure}
 %
 The evolutionary algorithm for MMDP used exactly the same parameters
