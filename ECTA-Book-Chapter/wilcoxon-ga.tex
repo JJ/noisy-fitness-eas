@@ -686,6 +686,31 @@ shown in Figures \ref{fig:lted:ns1} and \ref{fig:lted:ns2}.
   problem with 10 blocks and $\sigma=2$. Please note that, for the
   sake of clarity, the $y$ axis is logarithmic.\label{fig:lted:ns2}}
 \end{figure}
+%
+Please note that the unlabelled boxplots in Figures
+\ref{fig:lted:ns1} and  \ref{fig:lted:ns1}
+have the same values as the ones shown in figure
+\ref{fig:mmdp:evals}. In fact, we should look at the columns labelled
+{\em lted}, for {\em limited}. First, the number of evaluations in
+\ref{fig:lted:ns1} does not change significantly. It is essentially
+the same for ETA and slightly less for WPO (median 68610 for unlimited
+evaluations, 66550 for limited) but the difference is not significant;
+it is not significant either in success rate, which is essentially the
+same. However, with a higher noise level, shown in Figure
+\ref{fig:lted:ns2}, number of evaluations is {\em higher} and in this
+case the difference is significant (the limited version averages
+231400 evaluations while the unlimited averages 126700). 
+
+It should be noted that the average number of evaluations {\em
+  increases} even if the number of evaluations per individual {\em
+  decreases}. This means that, in some cases, this limitation makes
+{\em worse} individuals pass to the next generation, decreasing the
+quality of search, and making it slower. In general, our conclusion
+here is that the number of evaluations in WPO should be kept unlimited
+or, at least, limited to a high value. It might increase slightly the
+performance of the algorithm at low noise levels, but it will result
+it {\em worse} performance for higher noise levels. 
+
 
 \section{Conclusions}
 
