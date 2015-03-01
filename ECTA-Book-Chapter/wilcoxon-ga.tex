@@ -125,7 +125,7 @@ we have done two kind of improvements: improve speed, because
 implementation always matters
 \cite{DBLP:conf/iwann/MereloRACML11},
 and limit the amount of evaluations while checking if the results
-% Paloma - related to previous comment, "to limit the amount", or "by limitting"
+% Paloma - related to previous comment, "to limit the amount", or "by limiting"
 achieved (mainly success rate) remain the same.  
 
 The rest of the paper is structured as follows: in the next section we describe the
@@ -650,22 +650,34 @@ optimization processes with a limited budget.
 \label{ss:lted}
 
 As indicated in the state of the art, {\em resampling} that is,
+% Paloma - not clear, you may want to include "that is, performing new evaluations" in parentheses
 performing new evaluations, is only necessary in the case statistical
 significance is not met. If two individuals are different enough, the
 comparison will be significant even if they have only one
-measure. That is why some authors \cite{Qian:sampling} prove that
+measure. 
+% Paloma -  not clear... "even performing only one measure" ?
+That is why some authors \cite{Qian:sampling} have proved that
 resampling is not needed. However, as indicated above, an increasing
 number of evaluations will be needed as generations proceed, since, as
 shown in the noise study in Section \ref{sec:noise}, $\sigma$
-increases with time and it becomes increasingly difficult to make
-apart different inherent values of the fitness. That is why in this
+increases with time and it becomes increasingly difficult to take
+apart different inherent values of the fitness. 
+% Paloma - two sentences would do better:
+% "However, as indicated above, an increasing number of evaluations will be needed as generations proceed.
+% This is due to the fact that, as shown in the noise study in Section \ref{sec:noise}, $\sigma$ increases with time and it becomes increasingly difficult to take apart different inherent values of the fitness."
+That is why in this
 work we have performed resampling every generation, however, it is
+% Paloma - too much "That is why", try with "For this reason", or traditionally Hence, then, thus...
+% Also, "we have performed resampling on every generation." (Dot, and then "However, it is...")
 quite clear that this resampling should not proceed unchecked beyond
 what is statistically reasonable, that is why we have performed
-experiments limiting the maximum number of evaluations to 30 and
-evaluated its impact in performance. We repeated the experiments
+% Paloma - Another "that is why"
+experiments limiting the maximum number of evaluations to 30, and
+evaluated its impact in performance. We have repeated the experiments
 adding lines of code that skip making a new evaluation if the vector
-of fitness measures has reached 30. Code is, as usual, available in
+of fitness measures has reached 30.
+% Paloma - "has already reached the 30".
+Code is, as usual, available in
 the repository
 \url{https://github.com/JJ/algorithm-evolutionary-examples}. Experiment
 results and log are under the directory {\tt ECTA-book}. Results are
@@ -694,7 +706,9 @@ Please note that the unlabelled boxplots in Figures
 have the same values as the ones shown in figure
 \ref{fig:mmdp:evals}. In fact, we should look at the columns labelled
 {\em lted}, for {\em limited}. First, the number of evaluations in
-\ref{fig:lted:ns1} does not change significantly. It is essentially
+\ref{fig:lted:ns1} does not change significantly.
+% Paloma - Adverbs before verbs. "does not significantly change".
+ It is essentially
 the same for ETA and slightly less for WPO (median 68610 for unlimited
 evaluations, 66550 for limited) but the difference is not significant;
 it is not significant either in success rate, which is essentially the
@@ -707,11 +721,13 @@ It should be noted that the average number of evaluations {\em
   increases} even if the number of evaluations per individual {\em
   decreases}. This means that, in some cases, this limitation makes
 {\em worse} individuals pass to the next generation, decreasing the
-quality of search, and making it slower. In general, our conclusion
+quality of search, 
+% Paloma - not clear. "the search" ?
+and making it slower. In general, our conclusion
 here is that the number of evaluations in WPO should be kept unlimited
 or, at least, limited to a high value. It might increase slightly the
 performance of the algorithm at low noise levels, but it will result
-it {\em worse} performance for higher noise levels. 
+in {\em worse} performance for higher noise levels. 
 
 
 \section{Conclusions}
