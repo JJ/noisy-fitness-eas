@@ -267,24 +267,27 @@ when working in noisy environments.
 \section{Noise in games: An analysis}
 \label{sec:noise}
 
-In order to measure the nature of noise, we are going to use the
+In order to measure the nature of noise, we are going to use the data
+that is available to us, fitness evaluations in the
 Planet Wars game, that has been used as a framework for evolving
 strategies, for instance, in \cite{DBLP:journals/jcst/MoraFGGF12}. In
-this game, initial position of the players is random with the
+this game when one player {\em invades} a planet the outcome depends
+deterministically on the number of {\em ships} each player has; however, players are positioned randomly with the
 constraint that they should be far enough from each other; other than
-that, any planet in the game can be an initial position. Besides, in
-the strategy used in that game, actions are not deterministic, since
+that, any planet in the game can be an initial position. The planetary
+map is also random, chosen from 100 posibilities. Besides, in
+the strategy used in that game by our bot \cite{DBLP:conf/iwann/Fernandez-AresMMGF11}, actions are not deterministic, since
 every player is defined by a set of probabilities to take one course
-of action.
+of action. 
 
-An evolutionary algorithm with standard parameters was run with the
+In order to have enough measures to model the noise, an evolutionary algorithm with standard parameters was run with the
 main objective of measuring the behavior of fitness. A sample of ten
-individuals from generation 1, and another 10 from generation 50 were
+individuals from generation 1 and another 10 from generation 50 were
 extracted. The fitness of each individual was measured 100 times. 
 The main intention was also to see how noise evolved with
 time. Intuitively we thought that, since the players become better
 with evolution, the noise and thus the standard deviation would
-decrease. However, what we found is plotted in Figure \ref{fig:sd},
+decrease. However, what we found is shown in Figure \ref{fig:sd},
 which shows a plot of the standard deviation in both generations and
 illustrates the fact that the spread of fitness values is {\em bigger}
 as the evolution proceeds, going from around 0.15 to around 0.20. 
@@ -297,16 +300,18 @@ as the evolution proceeds, going from around 0.15 to around 0.20.
   50th. Fitness averages around 1. \label{fig:sd}}
 \end{figure}
 %
-which might be a bit misleading since the average values of
+This result might be a bit misleading since the average values of
 the fitness increase at the same time, but it implies that the noise
 level might be around 20\% of the {\em signal} in these kind of problems. 
 
-But we were also interested in checking whether, in fact, the normal
-distribution is the best fit for the fitness measures. We tested three
+By taking these measures, we were also interested in checking whether, in fact, the normal
+distribution is the best fit for the fitness measures, thus making
+averages of fitness appropriate for modelling the whole set of fitness
+measures. We tested three
 distributions: Gamma, Weibull and normal (Gaussian) distribution after
-doing an initial test that included Cauchy and Exponential. All this
+doing an initial test that included (and discarded) Cauchy and Exponential. All this
 analysis was done using the library {\tt fitrdist} in R, and data as
-well as scripts needed to do it are publicly available. After trying
+well as scripts needed to do it are publicly available in the GitHub repository. After trying
 to fit these three distribution to data in generation 1 and 50, we
 analyzed goodness-of-fit using the same package and the {\tt gofstat}
 function. This function yields several measures of goodness, including
@@ -314,18 +319,20 @@ the Akaike Information Criterion and the Kolmogorov-Smirnov statistic.
 
 What we found was that, in all cases, Gamma is the distribution that
 better fits the data. That does not mean that the noise effectively
-follows this distribution, but that if it can be said to follow one,
-it is this one. In fact, just a few individuals have a good fit (to
+follows this distribution, but that it is, of all distributions, the
+one that best fits the data. In fact, just a few individuals have a good fit (to
 % Paloma - better use "it is" than "it's"
 % done, but you can change this if you want by yourself - JJ
 95\% accuracy using the Kolmogorov-Smirnov), and none of them in
 generation 50. The fit for an individual in the first generation that
 does follow that distribution (individual 8) is shown in Figure
-\ref{fig:indi8}. 
+\ref{fig:indi8}. The main difference between Gamma and Gaussian is
+that Gamma is skewed, instead of being centered about a particular
+value. 
 %
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth]{../images/indi8.png}
+\includegraphics[width=0.95\textwidth]{../images/indi8.png}
 \caption{Fit of the fitness value of an individual in the first
   generation of the evolutionary algorithm to a gamma distribution,
   showing an histogram in the top left corner, CDFs in the bottom left
@@ -336,17 +343,21 @@ does follow that distribution (individual 8) is shown in Figure
 This figure also shows that, even if it is skewed, its skewness is not
 too high which makes it close to the standard distribution (which is
 considered a good
-approximation if $k$ > 10). 
+approximation if $k$ > 10). However, it is interesting to note the
+skewness inherent in the distribution as a feature of noise, at least
+in this particular game. 
 
 Some interesting facts that can be deduced from these measures is that
-in general, fitness is skewed and has a high value. Besides, it
+in general, fitness is skewed and its standard deviation has a high
+value, up to 20\% in some cases. Besides, it
 follows a gamma distribution, which, if we want to model noise
 % Paloma - "if we want to model noise"
 % argh, thx - JJ
 accurately, should be the one used. However, we are rather interested
-in the overall shape of noise so since the skewness value of the gamma
+in the overall shape of noise so since the skewness parameter of the gamma
 distribution is rather high we will use, in this paper, a Gaussian
-noise to simulate it. This will be used in the experiments shown
+noise to simulate it; Gaussian is a good aproximation of Gamma for
+high values of the skewness parameter. This will be used in the experiments shown
 below. 
 
 
@@ -383,7 +394,7 @@ using Wilcoxon test \cite{wilcoxon:1945}
 for comparing not the average, but all
 fitness values attached to an individual. This second method
 introduces a partial order in the population pool: two individuals
-might be different (one better than the other) or not. There are many
+might be different (one better than the other) or not \cite{wilcoxon:ga}. There are many
 possible ways of introducing this partial order in the evolutionary
 algorithm; however, what we have done is to pair individuals a certain
 number of times (10, by default) and have every individual score a
